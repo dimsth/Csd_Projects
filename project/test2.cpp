@@ -3,15 +3,15 @@
 START_GAME
 
 CREATE POKEMON{
-    "Mewtwo", 
-    "Electric", 
-    85
+    NAME: "Mewtwo", 
+    TYPE: "Electric", 
+    HP: 85
     };
 
 CREATE POKEMON{
-    "Hoothoot", 
-    "Fire", 
-    90
+    NAME:"Hoothoot", 
+    TYPE:"Fire", 
+    HP: 90
     };
 
 pkmn::Pokemon tmp = pkmn::Pokemon::getFromAllPokemons("Hoothoot");

@@ -9,7 +9,7 @@ pkmn::Pokemon pkmn::Pokemon::getFromAllPokemons(const std::string& _name) {
         }
     }
 
-    return pkmn::Pokemon("", "", 0);
+    return pkmn::Pokemon("", "", -1);
 }
 
 
