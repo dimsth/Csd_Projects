@@ -2,6 +2,7 @@
 #define POKEMON_H
 #include <iostream>
 #include <string>
+#include <functional>
 #include <list>
 
 namespace pkmn{
@@ -55,7 +56,25 @@ namespace pkmn{
     static Pokemon getFromAllPokemons(const std::string& _name);
 };
 
-    class Ability;
+    class Ability{
+    private:
+        std::string Name;
+        std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> Move;
+
+    public:
+        static Ability getFromAllAbilities(const std::string&);
+        Ability(std::string, std::function<void(pkmn::Pokemon& , pkmn::Pokemon& )>);
+
+
+
+        std::string getName();
+        std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getMove();
+
+        void setName(const std::string& newName);
+        void setMove(const std::function<void(pkmn::Pokemon& , pkmn::Pokemon& )> newMove);
+    
+    
+    };
 }
 
 #endif // POKEMON_H
