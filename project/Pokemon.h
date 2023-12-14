@@ -1,3 +1,5 @@
+#ifndef POKEMON_H
+#define POKEMON_H
 #include <iostream>
 #include <string>
 #include <list>
@@ -5,6 +7,8 @@
 namespace pkmn{
     class Pokemon{
     private:
+    // static std::list<Pokemon> allPokemon;
+
         int HP;
         int maxHP;
         std::string Type;
@@ -12,52 +16,46 @@ namespace pkmn{
         bool inPokeball = false;
         bool isAlive = true;
         std::list<std::string> Moves;
-        std::string oppenentsType;
+        std::string opponentsType;
         int playerNum = 0;
         int round = 0;
     
     public:
-        void setHP(int newHP);
 
-void setMaxHP(int newMaxHP) ;
+// Constructor
+    Pokemon(std::string, std::string, int);
 
-void setType(const std::string& newType) ;
+    // Setters
+    void setHP(int newHP);
+    void setMaxHP(int newMaxHP);
+    void setType(const std::string& newType);
+    void setName(const std::string& newName);
+    void setInPokeball(bool newValue);
+    void setIsAlive(bool newValue);
+    void setMoves(const std::list<std::string>& newMoves);
+    void setOpponentsType(const std::string& newOpponentsType);
+    void setPlayerNum(int newPlayerNum);
+    void setRound(int newRound);
 
-void setName(const std::string& newName) ;
+    // Getters
+    int getHP() const;
+    int getMaxHP() const;
+    std::string getType() const;
+    std::string getName() const;
+    bool getInPokeball() const;
+    bool getIsAlive() const;
+    std::list<std::string> getMoves() const;
+    std::string getOpponentsType() const;
+    int getPlayerNum() const;
+    int getRound() const;
 
-void setInPokeball(bool newValue) ;
+    // Other member functions...
 
-void setIsAlive(bool newValue) ;
-
-void setMoves(const std::list<std::string>& newMoves) ;
-
-void setOpponentsType(const std::string& newOpponentsType) ;
-
-void setPlayerNum(int newPlayerNum);
-
-void setRound(int newRound) ;
-
-// Getters
-int getHP() ;
-
-int getMaxHP() ;
-
-std::string getType();
-
-std::string getName() ;
-bool getInPokeball() ;
-
-bool getIsAlive();
-
-std::list<std::string> getMoves() ;
-
-std::string getOpponentsType();
-
-
-int getPlayerNum() ;
-
-int getRound();
-    };
+    // Static function
+    static Pokemon getFromAllPokemons(const std::string& _name);
+};
 
     class Ability;
 }
+
+#endif // POKEMON_H

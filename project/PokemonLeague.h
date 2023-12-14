@@ -15,6 +15,7 @@
 #define DAMAGE ;
 #define HEAL ;
 #define EQUIP ;
+#define POKEMON pkmn::Pokemon
 
 #define NAME false ? ""
 #define TYPE false ? ""

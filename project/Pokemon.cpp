@@ -1,18 +1,21 @@
 #include "Pokemon.h"
 
-std::list<Pokemon> allPokemon;
+std::list<pkmn::Pokemon> allPokemon;
 
-void getFromAllPokemons(std::string _name){
-    for(auto _pok: allPokemon){
-        if(_name == _pok.getName())
-            break;
+pkmn::Pokemon pkmn::Pokemon::getFromAllPokemons(const std::string& _name) {
+    for (auto& _pok : allPokemon) {
+        if (_name == _pok.getName()) {
+            return _pok; 
+        }
     }
-    return _pok;
+
+    return pkmn::Pokemon("", "", 0);
 }
+
 
 pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
     setHP(_maxhp);
-    setMaxHP(_maxhp)
+    setMaxHP(_maxhp);
     setType(_type);
     setName(_name);
 
@@ -22,83 +25,83 @@ pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
 
 
 // Setters
-void setHP(int newHP) {
+void pkmn::Pokemon::setHP(int newHP) {
     HP = newHP;
 }
 
-void setMaxHP(int newMaxHP) {
+void pkmn::Pokemon::setMaxHP(int newMaxHP) {
     maxHP = newMaxHP;
 }
 
-void setType(const std::string& newType) {
+void pkmn::Pokemon::setType(const std::string& newType) {
     Type = newType;
 }
 
-void setName(const std::string& newName) {
+void pkmn::Pokemon::setName(const std::string& newName) {
     Name = newName;
 }
 
-void setInPokeball(bool newValue) {
+void pkmn::Pokemon::setInPokeball(bool newValue) {
     inPokeball = newValue;
 }
 
-void setIsAlive(bool newValue) {
+void pkmn::Pokemon::setIsAlive(bool newValue) {
     isAlive = newValue;
 }
 
-void setMoves(const std::list<std::string>& newMoves) {
+void pkmn::Pokemon::setMoves(const std::list<std::string>& newMoves) {
     Moves = newMoves;
 }
 
-void setOpponentsType(const std::string& newOpponentsType) {
+void pkmn::Pokemon::setOpponentsType(const std::string& newOpponentsType) {
     opponentsType = newOpponentsType;
 }
 
-void setPlayerNum(int newPlayerNum) {
+void pkmn::Pokemon::setPlayerNum(int newPlayerNum) {
     playerNum = newPlayerNum;
 }
 
-void setRound(int newRound) {
+void pkmn::Pokemon::setRound(int newRound) {
     round = newRound;
 }
 
 // Getters
-int getHP() const {
+int pkmn::Pokemon::getHP() const {
     return HP;
 }
 
-int getMaxHP() const {
+int pkmn::Pokemon::getMaxHP() const {
     return maxHP;
 }
 
-std::string getType() const {
+std::string pkmn::Pokemon::getType() const {
     return Type;
 }
 
-std::string getName() const {
+std::string pkmn::Pokemon::getName() const {
     return Name;
 }
 
-bool getInPokeball() const {
+bool pkmn::Pokemon::getInPokeball() const {
     return inPokeball;
 }
 
-bool getIsAlive() const {
+bool pkmn::Pokemon::getIsAlive() const {
     return isAlive;
 }
 
-std::list<std::string> getMoves() const {
+std::list<std::string> pkmn::Pokemon::getMoves() const {
     return Moves;
 }
 
-std::string getOpponentsType() const {
+std::string pkmn::Pokemon::getOpponentsType() const {
     return opponentsType;
 }
 
-int getPlayerNum() const {
+int pkmn::Pokemon::getPlayerNum() const {
     return playerNum;
 }
 
-int getRound() const {
+int pkmn::Pokemon::getRound() const {
     return round;
 }
