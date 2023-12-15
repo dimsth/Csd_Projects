@@ -22,6 +22,14 @@ pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
     allPokemon.push_back(*this);
 }
 
+pkmn::Pokemon pkmn::Pokemon::operator,(const pkmn::Pokemon& move) {
+    allPokemon.push_back(move);
+    return *this;
+}
+
+void pkmn::Pokemon::operator[](const pkmn::Pokemon& move) {
+    allPokemon.push_back(move);
+}
 
 
 // Setters

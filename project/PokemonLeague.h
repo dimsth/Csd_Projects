@@ -8,7 +8,9 @@
 #define START_GAME                                                             \
   int main() {                                                                 \
     std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;                  \
-    pkmn::Ability temp{"Temp", noOp}
+    pkmn::Ability temp{"Temp", noOp};                                           \
+    pkmn::Pokemon temp2{"Temp", "Temp", 0};                        
+
 #define END_GAME                                                               \
   return 0;                                                                    \
   }
@@ -16,7 +18,9 @@
 #define DAMAGE ;
 #define HEAL ;
 #define EQUIP ;
+
 #define POKEMON pkmn::Pokemon
+#define POKEMONS temp2
 #define ABILITY pkmn::Ability
 #define ABILITIES temp
 
@@ -35,4 +39,3 @@
 #define AND(a, b, ...) [&](decltype(b))->bool{ std::vector<bool> exps{a, b, __VA_ARGS__}; bool exp = true; for(bool val : exps) exp = exp && val; return exp; }(b)
 #define OR(a, b, ...) [&](decltype(b))->bool{ std::vector<bool> exps{a, b, __VA_ARGS__}; bool exp = false; for(bool val : exps) exp = exp || val; return exp; }(b)
 #define NOT(a) !(a)
-

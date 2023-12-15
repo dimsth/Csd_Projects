@@ -52,7 +52,8 @@ namespace pkmn{
     int getRound() const;
 
     // Other member functions...
-
+        Pokemon operator,(const pkmn::Pokemon&);
+        void operator[](const pkmn::Pokemon&);
     // Static function
     static Pokemon getFromAllPokemons(const std::string& _name);
 };

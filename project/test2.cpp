@@ -43,17 +43,18 @@ CREATE ABILITIES[
     }
 ]
 
-CREATE POKEMON{
+CREATE POKEMONS [
+     POKEMON{
     NAME: "Mewtwo", 
     TYPE: "Electric", 
     HP: 85
     }
-
-CREATE POKEMON{
+ , POKEMON{
     NAME:"Hoothoot", 
     TYPE:"Fire", 
     HP: 90
-    };
+    }
+];
 
 pkmn::Pokemon tmpPok = pkmn::Pokemon::getFromAllPokemons("Hoothoot");
 std::cout<< tmpPok.getType()<<std::endl;
