@@ -7,8 +7,8 @@
 
 #define START_GAME                                                             \
   int main() {                                                                 \
-    std::cout << "test" << std::endl;                                          \
-    std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;
+    std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;                  \
+    pkmn::Ability temp{"Temp", noOp}
 #define END_GAME                                                               \
   return 0;                                                                    \
   }
@@ -18,7 +18,7 @@
 #define EQUIP ;
 #define POKEMON pkmn::Pokemon
 #define ABILITY pkmn::Ability
-
+#define ABILITIES temp
 
 #define NAME false ? ""
 #define TYPE false ? ""

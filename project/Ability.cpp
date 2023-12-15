@@ -21,6 +21,16 @@ pkmn::Ability::Ability(std::string _name, std::function<void(pkmn::Pokemon& atta
     allAbilities.push_back(*this);
 }
 
+pkmn::Ability pkmn::Ability::operator,(const pkmn::Ability& move) {
+    allAbilities.push_back(move);
+    return *this;
+}
+
+void pkmn::Ability::operator[](const pkmn::Ability& move) {
+    allAbilities.push_back(move);
+}
+
+
 void pkmn::Ability::setName(const std::string& newName) {
     Name = newName;
 }

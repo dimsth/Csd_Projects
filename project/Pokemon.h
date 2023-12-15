@@ -4,6 +4,7 @@
 #include <string>
 #include <functional>
 #include <list>
+#include <initializer_list>
 
 namespace pkmn{
     class Pokemon{
@@ -64,7 +65,8 @@ namespace pkmn{
     public:
         static Ability getFromAllAbilities(const std::string&);
         Ability(std::string, std::function<void(pkmn::Pokemon& , pkmn::Pokemon& )>);
-
+        Ability operator,(const pkmn::Ability&);
+        void operator[](const pkmn::Ability&);
 
 
         std::string getName();
