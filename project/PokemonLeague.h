@@ -31,6 +31,11 @@
 
 #define START [](pkmn::Pokemon& attacker, pkmn::Pokemon& defender){
 #define END ;}
+#define ATTACKER attacker
+#define DEFENDER defender
+#define GET_TYPE(x) (x).getType()
+#define GET_NAME(x) (x).getName()
+#define IS_IN_POKEBALL(x) (x).getInPokeball()
 
 #define IF if(
 #define DO ){
