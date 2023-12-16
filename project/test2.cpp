@@ -118,4 +118,16 @@ if (tmpAbil.getMove()) {
     std::cout << "Move function is not set for Ability" << std::endl;
 }
 
+
+DEAR "Hoothoot" LEARN [
+    ABILITY_NAME(Bite)
+    ABILITY_NAME(Aqua_Jet)
+    ABILITY_NAME(Spark)
+    ABILITY_NAME(Earth_Power)
+];
+
+tmpPokD = pkmn::Pokemon::getFromAllPokemons("Hoothoot");
+
+tmpPokD.pkmn::Pokemon::printAbilities();
+
 END_GAME

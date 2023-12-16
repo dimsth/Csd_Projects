@@ -8,9 +8,8 @@
 #define START_GAME                                                             \
   int main() {                                                                 \
     std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;                  \
-    pkmn::Ability tempAbility{"Temp", noOp};                                          \
+    pkmn::Ability tempAbility{"Temp", noOp};                                   \
     pkmn::Pokemon tempPokemon{"Temp", "Temp", 0};                        
-
 #define END_GAME                                                               \
   return 0;                                                                    \
   }
@@ -36,6 +35,10 @@
 #define GET_TYPE(x) (x + 0).getType()
 #define GET_NAME(x) (x + 0).getName()
 #define IS_IN_POKEBALL(x) (x + 0).getInPokeball()
+
+#define DEAR pkmn::Pokemon::getFromAllPokemons (
+#define LEARN )
+#define ABILITY_NAME(abilityName) #abilityName ","
 
 #define IF if(
 #define DO ){

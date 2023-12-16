@@ -9,7 +9,6 @@
 namespace pkmn{
     class Pokemon{
     private:
-    // static std::list<Pokemon> allPokemon;
 
         int HP;
         int maxHP;
@@ -52,13 +51,20 @@ namespace pkmn{
     int getRound() const;
 
     // Other member functions...
+
         Pokemon operator,(const pkmn::Pokemon&);
         void operator[](const pkmn::Pokemon&);
         Pokemon operator+(int);
         void operator+(bool);
         Pokemon &operator-();
+	void operator[](std::string);
+    void printAbilities();
+    void addAbilities(const std::vector<std::string>& abilities);
+
     // Static function
     static Pokemon getFromAllPokemons(const std::string& _name);
+    
+    bool operator==(const Pokemon& other) const;
 };
 
     class Ability{
@@ -81,6 +87,8 @@ namespace pkmn{
     
     
     };
+        // static std::list<Pokemon> allPokemon;
+
 }
 
 #endif // POKEMON_H

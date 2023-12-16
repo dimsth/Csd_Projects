@@ -14,6 +14,8 @@ pkmn::Pokemon pkmn::Pokemon::getFromAllPokemons(const std::string& _name) {
 
 
 pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
+        std::cout << "Creating Pokemon: " << _name << std::endl;
+
     setHP(_maxhp);
     setMaxHP(_maxhp);
     setType(_type);
@@ -22,13 +24,59 @@ pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
     allPokemon.push_back(*this);
 }
 
-pkmn::Pokemon pkmn::Pokemon::operator,(const pkmn::Pokemon& move) {
-    allPokemon.push_back(move);
+pkmn::Pokemon pkmn::Pokemon::operator,(const pkmn::Pokemon& _pkmn) {
     return *this;
 }
 
-void pkmn::Pokemon::operator[](const pkmn::Pokemon& move) {
-    allPokemon.push_back(move);
+void pkmn::Pokemon::operator[](const pkmn::Pokemon& _pkmn) {
+    return;
+}
+
+void pkmn::Pokemon::operator[](std::string abilitiesNames) {
+    std::vector<std::string> abilities;
+    size_t pos = 0;
+    std::string token;
+
+    while ((pos = abilitiesNames.find(",")) != std::string::npos) {
+        token = abilitiesNames.substr(0, pos);
+        abilities.push_back(token);
+        abilitiesNames.erase(0, pos + 1);
+    }
+
+    addAbilities(abilities);
+
+    pkmn::Pokemon tmp=getFromAllPokemons(getName());
+    auto it = std::find(allPokemon.begin(), allPokemon.end(), tmp);
+
+    if (it != allPokemon.end()) {
+        allPokemon.erase(it);
+        allPokemon.push_back(*this);
+    }
+
+}
+
+bool pkmn::Pokemon::operator==(const Pokemon& other) const {
+    return Name == other.Name && Type == other.Type;
+}
+
+void pkmn::Pokemon::addAbilities(const std::vector<std::string>& abilities) {
+    std::list<std::string> updatedMoves = getMoves(); 
+
+    for (const auto& ability : abilities) {
+        updatedMoves.push_back(ability);
+    }
+
+    setMoves(updatedMoves);
+   
+}
+
+void pkmn::Pokemon::printAbilities() {
+    std::cout << "Number of abilities: " << Moves.size() << std::endl;
+    std::cout << "Abilities: ";
+    for (const auto& ability : Moves) {
+        std::cout << ability << " ";
+    }
+    std::cout << std::endl;
 }
 
 pkmn::Pokemon& pkmn::Pokemon::operator-()
