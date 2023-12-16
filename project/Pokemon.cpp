@@ -31,6 +31,57 @@ void pkmn::Pokemon::operator[](const pkmn::Pokemon& move) {
     allPokemon.push_back(move);
 }
 
+pkmn::Pokemon& pkmn::Pokemon::operator-()
+{
+	setHP(-getHP());
+	return *this;
+}
+
+pkmn::Pokemon pkmn::Pokemon::operator+(int iValue)
+{
+	double dValue = iValue;
+	if (getHP() < 0) {
+		setHP(abs(getHP()));
+		
+        int finalDamage = iValue;
+        std::cout<< finalDamage << std::endl;
+
+
+        finalDamage = getType() == "Electric" ? 
+        (getOpponentsType() == "Fire" ? static_cast<int>(finalDamage - (0.3f * finalDamage)) : static_cast<int>(finalDamage - (0.2f * finalDamage))) :
+        finalDamage;
+
+        finalDamage = getOpponentsType() == "Fire"?
+        (getType() == "Electric" ? static_cast<int>(finalDamage + (0.2f * finalDamage)) : static_cast<int>(finalDamage + (0.15f * finalDamage))) :
+        finalDamage;
+
+        finalDamage = getType() == "Water" ?
+        static_cast<int>(finalDamage - (0.07f * finalDamage)):
+        finalDamage;
+
+        finalDamage = getOpponentsType() == "Water" ?
+        static_cast<int>(finalDamage + (0.07f * finalDamage)):
+        finalDamage;
+
+        finalDamage = getOpponentsType() == "Grass" && getRound() % 2 == 1 ?
+        static_cast<int>(finalDamage + (0.07f * finalDamage)):
+        finalDamage;
+
+        setHP(getHP() - finalDamage);
+
+        return *this;
+	}
+	setHP(getHP() + iValue);
+
+    getHP() > getMaxHP() ? setHP(getMaxHP()) : setHP(getHP());
+
+	return *this;
+}
+
+void pkmn::Pokemon::operator+(bool value){
+	setInPokeball(value);
+}
+
 
 // Setters
 void pkmn::Pokemon::setHP(int newHP) {

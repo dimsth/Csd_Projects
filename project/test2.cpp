@@ -6,6 +6,7 @@ CREATE ABILITY {
     NAME: "Shock",
     ACTION: START
         std::cout << "Shock"<< GET_TYPE(ATTACKER) <<std::endl;
+        DAMAGE DEFENDER 20
     END
 }
 
@@ -16,7 +17,7 @@ CREATE ABILITY {
     END
 }
 
-CREATE ABILITIES[
+CREATE ABILITIES [
     ABILITY {
         NAME: "Earth_Power",
         ACTION: START
@@ -26,12 +27,14 @@ CREATE ABILITIES[
     ABILITY {
         NAME: "Grass_Knot",
         ACTION: START
+            HEAL DEFENDER 10;
             std::cout << "Grass is weird"<< GET_NAME(DEFENDER)<<std::endl;
         END
     },
     ABILITY {
         NAME: "Aqua_Jet",
         ACTION: START
+            HEAL ATTACKER 10;
             std::cout << "Water" << std::endl;
             IF NOT(IS_IN_POKEBALL(DEFENDER)) DO
                 std::cout << "Water" << std::endl;
@@ -51,22 +54,29 @@ CREATE POKEMONS [
     NAME: "Mewtwo", 
     TYPE: "Electric", 
     HP: 85
-    }
- , POKEMON{
+    },
+    POKEMON{
     NAME:"Hoothoot", 
     TYPE:"Fire", 
     HP: 90
     }
-];
+]
+
+// ==============================================TESTING GROUND==============================================
+CREATE
 
 pkmn::Pokemon tmpPokA = pkmn::Pokemon::getFromAllPokemons("Hoothoot");
 std::cout<< tmpPokA.getType()<<std::endl;
 pkmn::Pokemon tmpPokD = pkmn::Pokemon::getFromAllPokemons("Mewtwo");
 std::cout<< tmpPokD.getHP()<<std::endl;
 
+tmpPokA.setOpponentsType(tmpPokD.getType());
+tmpPokD.setOpponentsType(tmpPokA.getType());
+
 pkmn::Ability tmpAbil = pkmn::Ability::getFromAllAbilities("Shock");
 if (tmpAbil.getMove()) {
     tmpAbil.getMove()(tmpPokA, tmpPokD);
+    std::cout<< tmpPokD.getHP()<<std::endl;
 } else {
     std::cout << "Move function is not set for Ability" << std::endl;
 }
@@ -81,6 +91,7 @@ if (tmpAbil.getMove()) {
 tmpAbil = pkmn::Ability::getFromAllAbilities("Grass_Knot");
 if (tmpAbil.getMove()) {
     tmpAbil.getMove()(tmpPokA, tmpPokD);
+    std::cout<< tmpPokD.getHP()<<std::endl;
 } else {
     std::cout << "Move function is not set for Ability" << std::endl;
 }
@@ -102,6 +113,7 @@ if (tmpAbil.getMove()) {
 tmpAbil = pkmn::Ability::getFromAllAbilities("Aqua_Jet");
 if (tmpAbil.getMove()) {
     tmpAbil.getMove()(tmpPokA, tmpPokD);
+    std::cout<< tmpPokA.getHP()<<std::endl;
 } else {
     std::cout << "Move function is not set for Ability" << std::endl;
 }

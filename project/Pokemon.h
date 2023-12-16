@@ -54,6 +54,9 @@ namespace pkmn{
     // Other member functions...
         Pokemon operator,(const pkmn::Pokemon&);
         void operator[](const pkmn::Pokemon&);
+        Pokemon operator+(int);
+        void operator+(bool);
+        Pokemon &operator-();
     // Static function
     static Pokemon getFromAllPokemons(const std::string& _name);
 };

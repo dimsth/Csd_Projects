@@ -8,21 +8,21 @@
 #define START_GAME                                                             \
   int main() {                                                                 \
     std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;                  \
-    pkmn::Ability temp{"Temp", noOp};                                           \
-    pkmn::Pokemon temp2{"Temp", "Temp", 0};                        
+    pkmn::Ability tempAbility{"Temp", noOp};                                          \
+    pkmn::Pokemon tempPokemon{"Temp", "Temp", 0};                        
 
 #define END_GAME                                                               \
   return 0;                                                                    \
   }
 #define CREATE ;
-#define DAMAGE ;
+#define DAMAGE ;-
 #define HEAL ;
 #define EQUIP ;
 
 #define POKEMON pkmn::Pokemon
-#define POKEMONS temp2
+#define POKEMONS tempPokemon
 #define ABILITY pkmn::Ability
-#define ABILITIES temp
+#define ABILITIES tempAbility
 
 #define NAME false ? ""
 #define TYPE false ? ""
@@ -31,11 +31,11 @@
 
 #define START [](pkmn::Pokemon& attacker, pkmn::Pokemon& defender){
 #define END ;}
-#define ATTACKER attacker
-#define DEFENDER defender
-#define GET_TYPE(x) (x).getType()
-#define GET_NAME(x) (x).getName()
-#define IS_IN_POKEBALL(x) (x).getInPokeball()
+#define ATTACKER attacker +
+#define DEFENDER defender +
+#define GET_TYPE(x) (x + 0).getType()
+#define GET_NAME(x) (x + 0).getName()
+#define IS_IN_POKEBALL(x) (x + 0).getInPokeball()
 
 #define IF if(
 #define DO ){
