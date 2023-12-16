@@ -2,20 +2,20 @@
 
 START_GAME
 
-CREATE ABILITY {
-    NAME: "Shock",
-    ACTION: START
-        std::cout << "Shock"<< GET_TYPE(ATTACKER) <<std::endl;
-        DAMAGE DEFENDER 20
-    END
-}
+// CREATE ABILITY {
+//     NAME: "Shock",
+//     ACTION: START
+//         std::cout << "Shock"<< GET_TYPE(ATTACKER) <<std::endl;
+//         DAMAGE DEFENDER 20
+//     END
+// }
 
-CREATE ABILITY {
-    NAME: "Spark",
-    ACTION: START
-        std::cout << "Its gonna Spark!"<< GET_TYPE(DEFENDER)<<std::endl;
-    END
-}
+// CREATE ABILITY {
+//     NAME: "Spark",
+//     ACTION: START
+//         std::cout << "Its gonna Spark!"<< GET_TYPE(DEFENDER)<<std::endl;
+//     END
+// }
 
 CREATE ABILITIES [
     ABILITY {
@@ -45,6 +45,7 @@ CREATE ABILITIES [
         NAME: "Bite",
         ACTION: START
             std::cout << "Meow" << std::endl;
+            POKEBALL DEFENDER _
         END
     }
 ]

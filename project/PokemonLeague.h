@@ -40,6 +40,14 @@
 #define LEARN )
 #define ABILITY_NAME(abilityName) #abilityName ","
 
+enum pokeballValue {
+	α = false
+};
+pokeballValue& operator-(pokeballValue value);
+bool operator--(pokeballValue value);
+#define POKEBALL ;
+#define _ true
+
 #define IF if(
 #define DO ){
 #define ELSE_IF ;}else if(

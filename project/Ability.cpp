@@ -17,17 +17,15 @@ pkmn::Ability pkmn::Ability::getFromAllAbilities(const std::string& _name) {
 pkmn::Ability::Ability(std::string _name, std::function<void(pkmn::Pokemon& attacker, pkmn::Pokemon& defender)> _move){
     setName(_name);
     setMove(_move);
-
     allAbilities.push_back(*this);
 }
 
 pkmn::Ability pkmn::Ability::operator,(const pkmn::Ability& move) {
-    allAbilities.push_back(move);
     return *this;
 }
 
 void pkmn::Ability::operator[](const pkmn::Ability& move) {
-    allAbilities.push_back(move);
+    return;
 }
 
 
