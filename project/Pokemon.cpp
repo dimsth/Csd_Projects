@@ -28,6 +28,15 @@ pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
     allPokemon.push_back(*this);
 }
 
+bool pkmn::Pokemon::checkAbility(std::string _ab) {
+    for(auto it: getMoves()){
+        if(_ab == it)
+            return true;
+    }
+
+    return false;
+}
+
 pkmn::Pokemon pkmn::Pokemon::operator,(const pkmn::Pokemon& _pkmn) {
     return *this;
 }
@@ -75,12 +84,9 @@ void pkmn::Pokemon::addAbilities(const std::vector<std::string>& abilities) {
 }
 
 void pkmn::Pokemon::printAbilities() {
-    std::cout << "Number of abilities: " << Moves.size() << std::endl;
-    std::cout << "Abilities: ";
     for (const auto& ability : Moves) {
-        std::cout << ability << " ";
+        std::cout << ability << std::endl;
     }
-    std::cout << std::endl;
 }
 
 pkmn::Pokemon& pkmn::Pokemon::operator-()
@@ -89,13 +95,12 @@ pkmn::Pokemon& pkmn::Pokemon::operator-()
 	return *this;
 }
 
-pkmn::Pokemon pkmn::Pokemon::operator+(int iValue)
+pkmn::Pokemon pkmn::Pokemon::operator+(int HPoints)
 {
-	double dValue = iValue;
 	if (getHP() < 0) {
 		setHP(abs(getHP()));
 		
-        int finalDamage = iValue;
+        int finalDamage = HPoints;
         std::cout<< finalDamage << std::endl;
 
 
@@ -123,7 +128,7 @@ pkmn::Pokemon pkmn::Pokemon::operator+(int iValue)
 
         return *this;
 	}
-	setHP(getHP() + iValue);
+	setHP(getHP() + HPoints);
 
     getHP() > getMaxHP() ? setHP(getMaxHP()) : setHP(getHP());
 

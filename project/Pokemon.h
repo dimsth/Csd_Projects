@@ -4,7 +4,7 @@
 #include <string>
 #include <functional>
 #include <list>
-#include <initializer_list>
+#include <vector>
 
 namespace pkmn{
     class Pokemon{
@@ -60,6 +60,7 @@ namespace pkmn{
 	void operator[](std::string);
     void printAbilities();
     void addAbilities(const std::vector<std::string>& abilities);
+    bool checkAbility(std::string);
 
     // Static function
     static Pokemon getFromAllPokemons(const std::string& _name);
