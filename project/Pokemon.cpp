@@ -12,6 +12,10 @@ pkmn::Pokemon pkmn::Pokemon::getFromAllPokemons(const std::string& _name) {
     return pkmn::Pokemon("", "", -1);
 }
 
+    std::list<pkmn::Pokemon> pkmn::Pokemon::getAllPokemon() {
+        return allPokemon;
+    }
+
 
 pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
         std::cout << "Creating Pokemon: " << _name << std::endl;

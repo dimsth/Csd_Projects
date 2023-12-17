@@ -131,4 +131,9 @@ tmpPokD = pkmn::Pokemon::getFromAllPokemons("Hoothoot");
 
 tmpPokD.pkmn::Pokemon::printAbilities();
 
+    std::list<pkmn::Pokemon> allPokemonList = pkmn::Pokemon::getAllPokemon();
+
+ for (const auto& pokemon : allPokemonList) {
+        std::cout << pokemon.getName() << std::endl;
+    };
 END_GAME

@@ -63,7 +63,8 @@ namespace pkmn{
 
     // Static function
     static Pokemon getFromAllPokemons(const std::string& _name);
-    
+    static std::list<pkmn::Pokemon> getAllPokemon();
+
     bool operator==(const Pokemon& other) const;
 };
 
