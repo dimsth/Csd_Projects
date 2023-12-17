@@ -1,11 +1,13 @@
 #include "PokemonLeague.h"
 
-START_GAME
+BEGIN_GAME
 
 CREATE ABILITY {
     NAME: "Shock",
     ACTION: START
-        DAMAGE DEFENDER 20
+        FOR 3 ROUNDS DO
+            DAMAGE DEFENDER 5
+        END
     END
 }
 
@@ -21,6 +23,9 @@ CREATE ABILITY {
     ACTION: START
         DAMAGE DEFENDER 20
         POKEBALL DEFENDER _
+        AFTER 1 ROUNDS DO
+            POKEBALL DEFENDER -- -α
+        END
     END
 }
 
@@ -42,13 +47,14 @@ CREATE ABILITIES [
     ABILITY {
         NAME: "Grass_Knot",
         ACTION: START
-            HEAL DEFENDER 10
+            // HEAL DEFENDER 10
+            SHOW "Name: " << GET_NAME(DEFENDER)<< "Type: " << GET_TYPE(DEFENDER)
         END
     },
     ABILITY {
         NAME: "Aqua_Jet",
         ACTION: START
-            HEAL ATTACKER 10
+            // HEAL ATTACKER 10
             IF NOT(IS_IN_POKEBALL(DEFENDER)) DO
                 SHOW "Name: " << GET_NAME(DEFENDER)<< "Type: " << GET_TYPE(DEFENDER)
             END
@@ -79,11 +85,11 @@ DEAR "Mew" LEARN [
     ABILITY_NAME(Grass_Knot)
     ABILITY_NAME(Shock)
     ABILITY_NAME(Water_Gun)
-    ABILITY_NAME(Crunch)
+    ABILITY_NAME(Bite)
 ]
 
 DEAR "Hoothoot" LEARN [
-    ABILITY_NAME(Bite)
+    ABILITY_NAME(Crunch)
     ABILITY_NAME(Aqua_Jet)
     ABILITY_NAME(Spark)
     ABILITY_NAME(Earth_Power)

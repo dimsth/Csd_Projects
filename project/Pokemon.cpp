@@ -9,23 +9,23 @@ pkmn::Pokemon pkmn::Pokemon::getFromAllPokemons(const std::string& _name) {
         }
     }
 
-    return pkmn::Pokemon("", "", -1);
+    return pkmn::Pokemon("Temp", "", -1);
 }
 
-    std::list<pkmn::Pokemon> pkmn::Pokemon::getAllPokemon() {
-        return allPokemon;
-    }
+std::list<pkmn::Pokemon> pkmn::Pokemon::getAllPokemon() {
+    return allPokemon;
+}
 
 
 pkmn::Pokemon::Pokemon(std::string _name, std::string _type, int _maxhp){
-        std::cout << "Creating Pokemon: " << _name << std::endl;
+    if(_name != "Temp"){
+        setHP(_maxhp);
+        setMaxHP(_maxhp);
+        setType(_type);
+        setName(_name);
 
-    setHP(_maxhp);
-    setMaxHP(_maxhp);
-    setType(_type);
-    setName(_name);
-
-    allPokemon.push_back(*this);
+        allPokemon.push_back(*this);
+    }
 }
 
 bool pkmn::Pokemon::checkAbility(std::string _ab) {
@@ -55,6 +55,16 @@ void pkmn::Pokemon::operator[](std::string abilitiesNames) {
         abilities.push_back(token);
         abilitiesNames.erase(0, pos + 1);
     }
+
+    std::sort(abilities.begin(), abilities.end());
+
+    for (size_t i = 1; i < abilities.size(); ++i) {
+        if (abilities[i] == abilities[i - 1]) {
+            assert((false) && "Duplicate abilities");
+        }
+    }
+
+    assert(abilities.size() < 5);
 
     addAbilities(abilities);
 
@@ -138,7 +148,38 @@ pkmn::Pokemon pkmn::Pokemon::operator+(int HPoints)
 void pkmn::Pokemon::operator+(bool value){
 	setInPokeball(value);
 }
+void pkmn::Pokemon::operator/(std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> _move){
+    ExtraFunc = _move;
+}
 
+void pkmn::Pokemon::setExtraFuncFor(int _num){
+    numOfRoundExtraFunc = _num;
+    extraFunctionType = true;
+}
+void pkmn::Pokemon::setExtraFuncAfter(int _num){
+    numOfRoundExtraFunc = _num;
+    extraFunctionType = false;
+} 
+
+std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> pkmn::Pokemon::getExtraFunc(){
+    return ExtraFunc;
+}
+        
+bool pkmn::Pokemon::getFuncType(){
+    return extraFunctionType;
+}
+
+int pkmn::Pokemon::getFinishRound(){
+    return finishExtraFuncRound;
+}
+
+int pkmn::Pokemon::getRoundextrafunc(){
+    return numOfRoundExtraFunc;
+}
+
+void pkmn::Pokemon::setFinishExtraFuncRound(int _round){
+    finishExtraFuncRound = _round;
+}
 
 // Setters
 void pkmn::Pokemon::setHP(int newHP) {

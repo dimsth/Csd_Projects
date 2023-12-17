@@ -5,7 +5,7 @@
 #include <vector>
 #include "Pokemon.h"
 
-#define START_GAME                                                             \
+#define BEGIN_GAME                                                             \
   int main() {                                                                 \
     std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;                  \
     pkmn::Ability tempAbility{"Temp", noOp};                                   \
@@ -42,13 +42,13 @@
 #define LEARN )
 #define ABILITY_NAME(abilityName) #abilityName ","
 
-enum pokeballValue {
-	α = false
-};
-pokeballValue& operator-(pokeballValue value);
-bool operator--(pokeballValue value);
+
 #define POKEBALL ;
 #define _ true
+
+#define FOR ;attacker.setExtraFuncFor(
+#define AFTER ;attacker.setExtraFuncAfter(
+#define ROUNDS ); attacker / [](pkmn::Pokemon& attacker, pkmn::Pokemon& defender
 
 #define IF ;if(
 #define DO ){
@@ -57,5 +57,11 @@ bool operator--(pokeballValue value);
 #define AND(a, b, ...) [&](decltype(b))->bool{ std::vector<bool> exps{a, b, __VA_ARGS__}; bool exp = true; for(bool val : exps) exp = exp && val; return exp; }(b)
 #define OR(a, b, ...) [&](decltype(b))->bool{ std::vector<bool> exps{a, b, __VA_ARGS__}; bool exp = false; for(bool val : exps) exp = exp || val; return exp; }(b)
 #define NOT(a) !(a)
+
+enum pokeballValue {
+	α = false
+};
+extern pokeballValue operator-(pokeballValue value);
+extern bool operator--(pokeballValue value);
 
 extern void startDuel();

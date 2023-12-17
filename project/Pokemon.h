@@ -5,6 +5,7 @@
 #include <functional>
 #include <list>
 #include <vector>
+#include <cassert>
 
 namespace pkmn{
     class Pokemon{
@@ -20,6 +21,11 @@ namespace pkmn{
         std::string opponentsType;
         int playerNum = 0;
         int round = 0;
+
+        bool extraFunctionType;
+        int finishExtraFuncRound = -1;
+        int numOfRoundExtraFunc = -1;
+        std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> ExtraFunc;
     
     public:
 
@@ -37,6 +43,7 @@ namespace pkmn{
     void setOpponentsType(const std::string& newOpponentsType);
     void setPlayerNum(int newPlayerNum);
     void setRound(int newRound);
+    void setFinishExtraFuncRound(int);
 
     // Getters
     int getHP() const;
@@ -49,6 +56,10 @@ namespace pkmn{
     std::string getOpponentsType() const;
     int getPlayerNum() const;
     int getRound() const;
+    std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getExtraFunc(); 
+    bool getFuncType();
+    int getFinishRound();
+    int getRoundextrafunc();
 
     // Other member functions...
 
@@ -57,6 +68,7 @@ namespace pkmn{
         Pokemon operator+(int);
         void operator+(bool);
         Pokemon &operator-();
+        void operator/(std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)>);
 	void operator[](std::string);
     void printAbilities();
     void addAbilities(const std::vector<std::string>& abilities);
@@ -65,6 +77,9 @@ namespace pkmn{
     // Static function
     static Pokemon getFromAllPokemons(const std::string& _name);
     static std::list<pkmn::Pokemon> getAllPokemon();
+
+    void setExtraFuncFor(int);
+    void setExtraFuncAfter(int);
 
     bool operator==(const Pokemon& other) const;
 };
@@ -85,10 +100,8 @@ namespace pkmn{
         std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getMove();
 
         void setName(const std::string& newName);
-        void setMove(const std::function<void(pkmn::Pokemon& , pkmn::Pokemon& )> newMove);
-    
-    
-    };
+        void setMove(const std::function<void(pkmn::Pokemon& , pkmn::Pokemon& )> newMove); 
+        };
         // static std::list<Pokemon> allPokemon;
 
 }

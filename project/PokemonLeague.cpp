@@ -1,5 +1,12 @@
 #include "PokemonLeague.h"
 
+pokeballValue operator-(pokeballValue value){
+	return value;
+}
+bool operator--(pokeballValue value){
+	return static_cast<bool>(value);
+}
+
 void printPokemonStatus(pkmn::Pokemon _pok1, pkmn::Pokemon _pok2){
 	std::cout << std::endl;
 	std::cout << "############################################" << std::endl;
@@ -101,10 +108,33 @@ void startDuel(){
 			abilityToCast = pkmn::Ability::getFromAllAbilities(temp);
 
 			abilityToCast.getMove()(player1, player2);
+
+			if(player1.getType() == "Grass" && Round % 2 == 0){
+				int hpRestor = player1.getMaxHP() * 0.05f;
+				player1 + hpRestor;
+			}
 		}
+		if (-1 != player1.getRoundextrafunc()){
+			int _round = player1.getRoundextrafunc();
+
+			if(-1 == player1.getFinishRound())
+				player1.setFinishExtraFuncRound(_round + Round);
+
+			if(Round < player1.getFinishRound() && player1.getFuncType())
+				player1.getExtraFunc()(player1, player2);
+			else if(Round >= player1.getFinishRound() && player1.getFuncType())
+				player1.setFinishExtraFuncRound(-1);
+
+			if(Round == player1.getFinishRound() && !player1.getFuncType())
+				player1.getExtraFunc()(player1, player2);
+			else if(Round >= player1.getFinishRound() && !player1.getFuncType())
+				player1.setFinishExtraFuncRound(-1);
+		}
+
 		printPokemonStatus(player1, player2);
 		if(!checkIfPokemonStillAlive(player2))
 			break;
+
 
 		printPokemonAbilities(player2);
 		if(!player2.getInPokeball()){
@@ -116,11 +146,35 @@ void startDuel(){
 			abilityToCast = pkmn::Ability::getFromAllAbilities(temp);
 
 			abilityToCast.getMove()(player2, player1);
+			if(player2.getType() == "Grass" && Round % 2 == 0){
+				int hpRestor = player2.getMaxHP() * 0.05f;
+				player2 + hpRestor;
+			}
 		}
+
+		if (-1 != player2.getRoundextrafunc()){
+			int _round = player2.getRoundextrafunc();
+
+			if(-1 == player2.getFinishRound())
+				player2.setFinishExtraFuncRound(_round + Round);
+
+			if(Round < player2.getFinishRound() && player2.getFuncType())
+				player2.getExtraFunc()(player2, player1);
+			else if(Round >= player2.getFinishRound() && player2.getFuncType())
+				player2.setFinishExtraFuncRound(-1);
+
+			if(Round == player2.getFinishRound() && !player2.getFuncType())
+				player2.getExtraFunc()(player2, player1);
+			else if(Round >= player2.getFinishRound() && !player2.getFuncType())
+				player2.setFinishExtraFuncRound(-1);
+		}
+
 		printPokemonStatus(player1, player2);
 		if(!checkIfPokemonStillAlive(player1))
 			break;
 
 		Round++;
+		player1.setRound(Round);
+		player2.setRound(Round);
 	}
 }

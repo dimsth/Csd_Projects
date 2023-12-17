@@ -10,15 +10,19 @@ pkmn::Ability pkmn::Ability::getFromAllAbilities(const std::string& _name) {
     }
 
     std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;
-    return pkmn::Ability("", noOp);
+    return pkmn::Ability("Temp", noOp);
 }
 
 
 pkmn::Ability::Ability(std::string _name, std::function<void(pkmn::Pokemon& attacker, pkmn::Pokemon& defender)> _move){
-    setName(_name);
-    setMove(_move);
-    allAbilities.push_back(*this);
+    if(_name != "Temp") {
+        setName(_name);
+        setMove(_move);
+        allAbilities.push_back(*this);
+    }
 }
+
+
 
 pkmn::Ability pkmn::Ability::operator,(const pkmn::Ability& move) {
     return *this;
