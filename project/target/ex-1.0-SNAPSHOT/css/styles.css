@@ -1,0 +1,112 @@
+
+
+header h1 {
+  text-align: center;
+}
+
+header{
+  background-color: rgba(86, 98, 70, 1);
+  margin: 0;
+}
+ 
+header img[alt="ranger-header"]{   
+  max-height: 90px; 
+  object-fit: cover;  
+}
+
+header a, 
+header p{
+	margin: 0;
+	padding: 0;
+	font-size: 25px;
+        color: #000;
+}
+header p{
+	align-self: center;
+}
+
+/* Footer */
+footer{ 
+  background-color: #4a4a48;
+  border: 5px solid #4a4a48; 
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 100px; 
+  margin-top: 20px auto;
+}
+
+footer a{
+  color:#fff;
+}
+
+.lr{
+    display: flex;
+    gap: 7px;
+}
+
+
+div .hidden{
+    display: none;
+}
+
+.pl{
+    display: flex;
+    gap: 7px;
+}
+
+#logout{
+    cursor: pointer;
+}
+
+.joinNow {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.heroSection{
+    height: 100vh;
+    background: url('../img/bg.jpg') center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.heroText{
+    text-align: center;
+    color: #fff;
+}
+
+.heroText h1{
+    font-size: 3em;
+    margin: 0;
+}
+
+.heroText button{
+    color: #fff;
+    background: transparent;
+    border: solid 2px #fff;
+    padding: 10px 30px;
+    border-radius: 30px;
+    margin: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.heroText button:hover{
+    cursor: pointer;
+    background: #fff;
+    border: solid 2px #fff;
+    color: #333;
+}
+
+button.joinNow{
+    background: rgb(0, 206, 93);
+    border: solid 2px rgb(0, 206, 93);
+}
+
+button.joinNow:hover{
+    color: #fff;
+    background: rgb(1, 168, 76);
+    border: solid 2px rgb(1, 168, 76);
+}

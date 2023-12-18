@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../css/styles_pets.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Pets Finder</title>
+    <base href="/ex/">
+  
+    <script src="js/ajax.js" defer></script>
+    <script src="js/ajaxRest.js" defer></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body onload="checkLoggedIn()">
+    <header>
+    <div class="container text-center ">
+      <div class="row">
+        <div class="col">
+            <img src="img/img_01.png" alt="ranger-header">
+        </div>
+        <div class="col-8 align-self-center">
+          <h1>Pet Finder</h1>
+        </div>
+        <div id="lr" class="col lr">      
+            <p><a href="html/login.html">Login</a></p>
+            <p><a href="index.html">Back</a></p>
+        </div>
+        <div id="pl" class="col pl hidden">      
+            <p><a href="html/login.html">Profile</a></p>
+            <p><a onclick="logoutUser()" id="logout">Logout</a></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<div id="demo">
+        <div class="row">
+            <div class="col-3" id="choices"> 
+                <div class="req1">
+                    <h3>Add Pet</h3>
+                    <form id="myForm" name="myForm" onsubmit='addPet();return false;'>
+                        <div class="col">
+                            <label for='pet_id'>Pet ID:</label>
+                            <input id='pet_id' type='text' name='pet_id' onblur="checkID(0, 0)" required>
+                        </div>
+
+                        <div class="col">
+                            <label for='owner_id'>Pet OwnerID:</label>
+                            <input id='owner_id' type="text" name='owner_id' onblur="checkOwner(0,0)" required>
+                        </div>
+
+                        <div class="col">
+                            <label for='name'>Pet Name:</label>
+                            <input id='name' type='text' name='name' required>
+                        </div>
+
+                        <div class="col">
+                            <label for='type'>Pet Type:</label>
+                            <input id='type' type="text" name='type' required>
+                        </div>
+
+                        <div class="col">
+                            <label for='breed'>Pet Breed:</label>
+                            <input id='breed' type="text" name='breed' required>
+                        </div>
+
+                        <div class="col">
+                            <label for='gender'>Pet Gender:</label>
+                            <input id='gender' type="text" name='gender' required>
+                        </div>
+
+                        <div class="col">
+                            <label for='birthyear'>Pet Birthyear:</label>
+                            <input id='birthyear' type="number" name='birthyear' onblur="checkBirthyear(0,0)" required>
+                        </div>
+
+                        <div class="col">
+                            <label for='weight'>Pet Weight:</label>
+                            <input id='weight' type="number" name="weight" onblur="checkWeight(0, 0)" required>
+                        </div>
+
+                        <div class="col">
+                            <label for='description'>Pet Description:</label>
+                            <input id='description' type="text" name='description' required>
+                        </div>
+
+                        <div class="col">
+                            <label for='photo'>Pet Photo:</label>
+                            <input id='photo' type="url" name='photo' onblur="checkPhoto(0, 0)" required>
+                        </div>
+
+                        <div class="col">
+                            <label id="error0" class="hidden">Something is incorrect</label>
+                            <input type='submit' class="button" name="submit" value="Add Pet"> <!-- Press this to submit form -->
+                        </div>
+                    </form>
+                </div>
+
+                <div class="req2">
+                    <h3>See All Pets</h3>
+                    <div class="col">
+                    <button type="button" onclick="getPets()" class="button">Get Pets</button>
+                    </div>
+                </div>
+                
+                <div class="req3">
+                    <h3>See Specific Pet</h3>
+                    <div class="col">
+                        <label for='type'>Pet Type:</label>
+                        <input id="type2" type="text">
+                    </div>
+
+                    <div class="col">
+                        <label for='breed'>Pet Breed:</label>
+                        <input id="breed2" type="text">
+                    </div>
+
+                    <div class="col">
+                        <label for='fromWeight'>Pet from Weight:</label>
+                        <input id="fromWeight" name="weight" onblur="checkWeight(1, 1)" type="number">
+                    </div>
+
+                    <div class="col">
+                        <label for='toWeight'>Pet to Weight:</label>
+                        <input id="toWeight" name="weight" onblur="checkWeight(2, 1)" type="number">
+                    </div>
+
+                    <div class="col">
+                    <label id="error1" class="hidden">Something is incorrect</label>
+                    <button type="button" name="submit" onclick="getPetsTBW()" class="button" >Get Pet(s)</button>
+                    </div>
+                </div>
+
+                <div class="req3">
+                    <h3>Change Pets Weight</h3>
+                    <div class="col">
+
+                        <label for='pet_id1'>Pet Id:</label>
+                        <input id='pet_id1' type="text" name='pet_id' onblur="checkID(1, 2)">
+                    </div>
+
+                    <div class="col">
+                        <label for='weight2'>New Weight:</label>
+                        <input id='weight2' type="number" name="weight" onblur="checkWeight(3, 2)">
+                    </div>
+
+                    <div class="col">
+                    <label id="error2" class="hidden">Something is incorrect</label>
+                    <button type="button" name="submit" onclick="updatePetWeight()" class="button">Update Pet Weight</button>
+                    </div>
+                </div>
+                
+                <div class="req4">
+                    <h3>Delete Pet</h3>
+                    <div class="col">
+                        <label for='pet_id2'>Pet ID:</label>
+                        <input id='pet_id2' type="text" name='pet_id' onblur="checkID(2,3)">
+                    </div>
+                    <div class="col">
+                    <label id="error3" class="hidden">Something is incorrect</label>
+                    <button type="button" name="submit" onclick="deletePet()" class="button">Delete Pet</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-8" id="output">
+                <h2>Output</h2>
+                <div id="msg" class="extra-t"></div>
+                  
+            </div>
+			
+        </div>
+
+</div>
+
+<footer class="py-3 footer">
+    <p class="text-center ">&copy; 2023 CSD, csd5010</p>
+  </footer>
+
+
+</body>
+</html>
+
