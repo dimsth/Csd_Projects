@@ -266,56 +266,82 @@ function addUser(event) {
 
 function getUser(callback) {
     var formData = {
-                    username: document.getElementById("username").value,
-                    password: document.getElementById("password").value
-                };
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value
+    };
+
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
         if (xhr.readyState === 4) {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                callback(0, xhr.responseText);
-            } else if (xhr.status !== 200) {
-                callback(1, "");
+            if (xhr.status === 200) {
+                // Pet Keeper found
+                callback(0, xhr.responseText, "PetKeeper");
+            } else {
+                // If not found as Pet Keeper, try as Pet Owner
+                var xhrOwner = new XMLHttpRequest();
+                xhrOwner.onload = function () {
+                    if (xhrOwner.readyState === 4) {
+                        if (xhrOwner.status === 200) {
+                            // Pet Owner found
+                            callback(0, xhrOwner.responseText, "PetOwner");
+                        } else {
+                            // Neither found
+                            callback(1, "");
+                        }
+                    }
+                };
+                xhrOwner.open('GET', 'GetPetOwner?' + new URLSearchParams(formData).toString());
+                xhrOwner.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhrOwner.send();
             }
         }
     };
 
-    // Construct the query string manually
-    var data = new URLSearchParams(formData).toString();
-    var url = 'GetPetKeeper?' + data;
-
-    xhr.open('GET', url);
+    xhr.open('GET', 'GetPetKeeper?' + new URLSearchParams(formData).toString());
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.send();
 }
 
-function loginUser(){ 
+function loginUser() {
     event.preventDefault();
 
-    getUser(function(ret, response) {
-            var main = document.getElementById("main-cont");
-            var error = document.getElementById("error");
-            var table = document.getElementById("table");
+    getUser(function (ret, response, userType) {
+        var main = document.getElementById("main-cont");
+        var error = document.getElementById("error");
+        var table = document.getElementById("table");
 
+        if (ret === 0 && response !== "") {
+            if (userType === "PetOwner") {
 
-            if(main && error){
-                console.log("Here");
-                main.style.display = "block";
-                error.style.display = "flex";
-                table.style.display = "none";
-                if (ret === 0 && response !== "") { //found
-                    console.log("NowHere");
-                    main.style.display = "none";
-                    error.style.display = "";
-                    table.style.display = "block";
-                    document.getElementById("table").innerHTML = createTableFromJSON(JSON.parse(response));
+                localStorage.setItem('userType', 'PetOwner');
 
-                }
+                console.log("Pet Keeper Logged In");
+                main.style.display = "none";
+                error.style.display = "";
+                table.style.display = "block";
+                document.getElementById("table").innerHTML = createTableFromJSON(JSON.parse(response));
+
+            } else {
+                // Handle Pet Keeper login
+                localStorage.setItem('userType', 'PetKeeper');
+
+                console.log("Pet Keeper Logged In");
+                main.style.display = "none";
+                error.style.display = "";
+                table.style.display = "block";
+                document.getElementById("table").innerHTML = createTableFromJSON(JSON.parse(response));
             }
-        });
+        } else {
+            // Login failed
+            console.log("Login Failed");
+            main.style.display = "block";
+            error.style.display = "flex";
+            table.style.display = "none";
+        }
+
         var logout = document.getElementById("logout");
         logout.classList.remove('hidden');
-        
+    });
 }
 
 function updateUser(string, callback){
@@ -430,38 +456,39 @@ function hideAllInputs() {
 }
 
 function checkLoggedIn() {
-    // Make an AJAX request to a server endpoint to check the session status
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
         if (xhr.readyState === 4) {
-            if (xhr.readyState === 4 && xhr.status === 200) {
+            if (xhr.status === 200) {
                 console.log("Success");
                 var logout = document.getElementById("logout");
-   
                 var main = document.getElementById("main-cont");
                 var table = document.getElementById("table");
-                if(main !== null && table !== null){
+
+                if (main !== null && table !== null) {
                     document.getElementById("table").innerHTML = createTableFromJSON(JSON.parse(xhr.responseText));
                     main.style.display = "none";
                     table.style.display = "block";
                     logout.classList.remove('hidden');
                 }
-                
+
                 var lr = document.getElementById("lr");
                 var pl = document.getElementById("pl");
-                if(lr !== null && pl !== null){
+                if (lr !== null && pl !== null) {
                     lr.style.display = "none";
                     pl.style.display = "flex";
                 }
-            } else if (xhr.status !== 200) {
+            } else {
                 console.log("Failed");
             }
         }
     };
 
-    // Construct the query string manually
-    var url = 'GetPetKeeper?';
+    // Determine which endpoint to call based on user type
+    var userType = localStorage.getItem('userType'); // Replace with your method of retrieving user type
 
+    var url = userType === 'PetOwner' ? 'GetPetOwner' : 'GetPetKeeper?';
+    console.log(url);
     xhr.open('GET', url);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.send();

@@ -69,6 +69,7 @@ public class GetPetKeeper extends HttpServlet {
             // Check if the session exists and is valid
             if (session != null && session.getAttribute("username") != null) {
                 System.out.println("Session Exists");
+
                 EditPetKeepersTable eut = new EditPetKeepersTable();
                 String usr = (String) session.getAttribute("username");
                 PetKeeper su;
@@ -85,6 +86,7 @@ public class GetPetKeeper extends HttpServlet {
                     Logger.getLogger(GetPetKeeper.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+
             response.setStatus(203);
             return;
         }
@@ -126,7 +128,6 @@ public class GetPetKeeper extends HttpServlet {
 
                 // Store the username in the session to indicate that the user is logged in
                 session.setAttribute("username", username);
-
                 response.setStatus(200);
             }
             } catch (SQLException ex) {

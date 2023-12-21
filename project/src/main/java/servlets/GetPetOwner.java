@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import mainClasses.PetOwner;
 
@@ -56,6 +57,33 @@ public class GetPetOwner extends HttpServlet {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
+        if (username == null && password == null && email == null) {
+            System.out.println("POSeesion");
+            HttpSession session = request.getSession(false);
+            
+              System.out.println(session.getAttribute("username"));
+
+            // Check if the session exists and is valid
+            if (session != null && session.getAttribute("username") != null) {
+                System.out.println("POSession Exists");
+                EditPetOwnersTable eut = new EditPetOwnersTable();
+                String usr = (String) session.getAttribute("username");
+                PetOwner su;
+                try (PrintWriter out = response.getWriter()) {
+                    su = eut.findUsernameToPetOwners(usr);
+
+                    String json = eut.petOwnerToJSON(su);
+                    out.println(json);
+                    response.setStatus(200);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GetPetOwner.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(GetPetOwner.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            response.setStatus(203);
+            return;
+        }  
         if (email != null) {
             System.out.println("Email");
             try (PrintWriter out = response.getWriter()) {
@@ -78,21 +106,27 @@ public class GetPetOwner extends HttpServlet {
         } else if (password != null) {
             System.out.println("Username & Password");
             try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
                 EditPetOwnersTable eut = new EditPetOwnersTable();
                 PetOwner su = eut.databaseToPetOwners(username, password);
+
                 if (su == null) {
-                    response.setStatus(204);
+                    response.setStatus(204); // No content status code
                     out.println("{\"error\": \"PetOwner not found\"}");
                 } else {
                     String json = eut.petOwnerToJSON(su);
                     out.println(json);
-                    response.setStatus(200);
+
+                    HttpSession session = request.getSession();
+                    session.setAttribute("username", username);
+
+                    response.setStatus(200); // OK status code
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(GetPetKeeper.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GetPetKeeper.class.getName()).log(Level.SEVERE, "SQLException occurred", ex);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access error occurred");
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(GetPetKeeper.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GetPetKeeper.class.getName()).log(Level.SEVERE, "ClassNotFoundException occurred", ex);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "JDBC Driver not found");
             }
         } else if (username != null) {
             System.out.println("Username");
