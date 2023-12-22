@@ -1,0 +1,41 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #d8dad3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 0 40px;
+  background-color: rgb(58, 61, 52); /*#3f3f3d;*/
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  width: auto;
+}
+
+header img[alt="ranger-header"] {
+  max-height: 90px;
+  object-fit: cover;
+}
+
+header a,
+header p {
+  margin: 0;
+  padding: 0;
+  color: #000;
+  font-size: 25px;
+}
+
+header p {
+  align-self: center;
+}
+
+main{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}

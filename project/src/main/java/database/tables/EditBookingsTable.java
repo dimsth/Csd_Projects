@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,6 +25,28 @@ public class EditBookingsTable {
     public void addBookingFromJSON(String json) throws ClassNotFoundException {
         Booking r = jsonToBooking(json);
         createNewBooking(r);
+    }
+
+    public ArrayList<Booking> takeAllPetKeepersBooking(String id) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        ArrayList<Booking> ret = new ArrayList<>();
+        try {
+            rs = stmt.executeQuery("SELECT * FROM bookings WHERE keeper_id='" + id + "'");
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Booking rev = gson.fromJson(json, Booking.class);
+                ret.add(rev);
+            }
+            return ret;
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+        return null;
     }
 
     public Booking databaseToBooking(int id) throws SQLException, ClassNotFoundException {
