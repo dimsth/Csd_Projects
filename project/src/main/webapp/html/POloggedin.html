@@ -1,15 +1,39 @@
-<!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
-<html>
+<!doctype html>
+<html lang="en" class="no-js">
+
     <head>
-        <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/styles_login.css">
+        <title>POLoggedIn Form</title>
+        <base href="/ex/">
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="js/ajax.js" defer></script>
+
     </head>
-    <body>
-        <div>PetOwner logged in</div>
+
+    <body onload="checkLoggedIn()">
+        <header>
+            <div class="container text-center ">
+                <div class="row">
+                    <div class="col">
+                        <img src="img/img_01.png" alt="ranger-header">
+                    </div>
+                    <div id="lr" class="col lr">
+                        <p><a href="html/login.html">Login</a></p>
+                        <p><a href="html/register.html">Register</a></p>
+                    </div>
+                    <div id="pl" class="col pl hidden">
+                        <p><a href="html/login.html">Profile</a></p>
+                        <p><a onclick="logoutUser()" id="logout">Logout</a></p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div></div>
+
     </body>
+
 </html>

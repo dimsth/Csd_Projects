@@ -173,7 +173,7 @@ public class GetPetKeeper extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String logout = request.getParameter("logout");
         if ("true".equals(logout)) {
-            System.out.println("Logging out");
+            System.out.println("POLogging out");
             HttpSession session = request.getSession(false);
 
             if (session != null) {
@@ -182,7 +182,7 @@ public class GetPetKeeper extends HttpServlet {
             }
 
             response.setStatus(200);
-            response.getWriter().write("Logout Successful");
+            response.getWriter().write("POLogout Successful");
             return;
         }
 

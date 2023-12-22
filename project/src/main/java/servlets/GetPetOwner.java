@@ -163,6 +163,21 @@ public class GetPetOwner extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("GetPetOwner Post");
         response.setContentType("text/html;charset=UTF-8");
+        String logout = request.getParameter("logout");
+
+        if ("true".equals(logout)) {
+            System.out.println("Logging out");
+            HttpSession session = request.getSession(false);
+
+            if (session != null) {
+                // Invalidate the session
+                session.invalidate();
+            }
+
+            response.setStatus(200);
+            response.getWriter().write("Logout Successful");
+            return;
+        }
 
         System.out.println("Add PetOwner");
         try (PrintWriter out = response.getWriter()) {

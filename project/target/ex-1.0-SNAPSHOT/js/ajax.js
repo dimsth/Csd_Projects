@@ -314,22 +314,26 @@ function loginUser() {
             if (userType === "PetOwner") {
 
                 localStorage.setItem('userType', 'PetOwner');
-
                 console.log("Pet Keeper Logged In");
+
                 main.style.display = "none";
                 error.style.display = "";
                 table.style.display = "block";
                 document.getElementById("table").innerHTML = createTableFromJSON(JSON.parse(response));
+
+                window.location.href = "html/POloggedin.html";
 
             } else {
                 // Handle Pet Keeper login
                 localStorage.setItem('userType', 'PetKeeper');
-
                 console.log("Pet Keeper Logged In");
+
                 main.style.display = "none";
                 error.style.display = "";
                 table.style.display = "block";
                 document.getElementById("table").innerHTML = createTableFromJSON(JSON.parse(response));
+
+                window.location.href = "html/PKloggedin.html";
             }
         } else {
             // Login failed
@@ -412,15 +416,21 @@ function hideAllInputs() {
  function logoutUser(){
     var formData = {
                     logout: "true"
-                };
+    };
+
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
         if (xhr.readyState === 4) {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log("Success");
+
+                localStorage.removeItem('userType');
+                console.log("User type cleared from localStorage");
+
                 var logout = document.getElementById("logout");          
                 var main = document.getElementById("main-cont");
                 var table = document.getElementById("table");
+
                 if(main !== null && table !== null){
                     document.getElementById("table").innerHTML = emptyTableFromJSON();
                     main.style.display = "block";
@@ -434,6 +444,7 @@ function hideAllInputs() {
                     lr.style.display = "flex";
                     pl.style.display = "none";
                 }
+                window.location.href = 'index.html';
             } else if (xhr.status !== 200) {
                 console.log("Failed");
             }
@@ -494,3 +505,17 @@ function checkLoggedIn() {
     xhr.send();
 }
 
+function adjustBackLink() {
+    var userType = localStorage.getItem('userType');
+    var backLink = document.getElementById('backLink');
+
+    if (userType) {
+        if (userType === 'PetOwner') {
+            backLink.href = 'html/POloggedin.html';
+        } else if (userType === 'PetKeeper') {
+            backLink.href = 'html/PKloggedin.html'; // Adjust as needed
+        }
+    } else {
+        backLink.href = 'index.html';
+    }
+}

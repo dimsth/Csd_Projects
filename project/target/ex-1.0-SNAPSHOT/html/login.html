@@ -15,11 +15,11 @@
     <script src="js/ajax.js" defer></script>
 </head>
 
-<body onload="checkLoggedIn()">
-  <header>
-      <img src="img/img_01.png" alt="ranger-header">
+<body onload="adjustBackLink(); checkLoggedIn();">
+    <header>
+        <img src="img/img_01.png" alt="ranger-header">
       <p><a onclick="logoutUser()" id="logout" class="hidden">Logout</a></p>
-      <p><a href="index.html">Back</a></p>
+      <p><a href="index.html" id="backLink">Back</a></p>
   </header>
 
     <main>
