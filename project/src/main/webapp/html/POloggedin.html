@@ -4,7 +4,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../css/styles_login.css">
+        <link rel="stylesheet" href="../css/styles_PO_login.css">
+        <link rel="stylesheet" href="../css/woah.css">
+
         <title>POLoggedIn Form</title>
         <base href="/ex/">
         
@@ -15,7 +17,8 @@
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="js/ajax.js" defer></script>
-
+        <script src="js/ajaxPO.js" defer></script>
+        <script src="js/ajaxRest.js" defer></script>
     </head>
 
     <body onload="checkLoggedIn()">
@@ -40,7 +43,134 @@
             </div>
         </header>
 
-        <div></div>
+        <main>
+            <section id="dashboard-overview">
+                <h2>Dashboard Overview</h2>
+                <!-- Dashboard content goes here -->
+            </section>
+
+            <section id="pet-registration">
+                <h2>Pet Registration</h2>
+                <div class="row">
+                    <div class="col-3" id="choices">
+                        <div class="req1">
+                            <h3>Add Pet</h3>
+                            <form id="myForm" name="myForm" onsubmit='addPet();return false;'>
+                                <div class="col">
+                                    <label for='pet_id'>Pet ID:</label>
+
+                                    <input id='pet_id' type='text' name='pet_id' onblur="checkID(0, 0)" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='owner_id'>Pet OwnerID:</label>
+                                    <input id='owner_id' type="text" name='owner_id' onblur="checkOwner(0,0)" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='name'>Pet Name:</label>
+                                    <input id='name' type='text' name='name' required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='type'>Pet Type:</label>
+                                    <input id='type' type="text" name='type' required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='breed'>Pet Breed:</label>
+                                    <input id='breed' type="text" name='breed' required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='gender'>Pet Gender:</label>
+                                    <input id='gender' type="text" name='gender' required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='birthyear'>Pet Birthyear:</label>
+                                    <input id='birthyear' type="number" name='birthyear' onblur="checkBirthyear(0,0)" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='weight'>Pet Weight:</label>
+                                    <input id='weight' type="number" name="weight" onblur="checkWeight(0, 0)" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='description'>Pet Description:</label>
+                                    <input id='description' type="text" name='description' required>
+                                </div>
+
+                                <div class="col">
+                                    <label for='photo'>Pet Photo:</label>
+                                    <input id='photo' type="url" name='photo' onblur="checkPhoto(0, 0)" required>
+                                </div>
+
+                                <div class="col">
+                                    <label id="error0" class="hidden">Something is incorrect</label>
+                                    <input type='submit' class="button" name="submit" value="Add Pet"> <!-- Press this to submit form -->
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="req2">
+                            <h3>See All Pets</h3>
+                            <div class="col">
+                                <button type="button" onclick="getPets()" class="button">Get Pets</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-8" id="output">
+                        <h2>Output</h2>
+                        <div id="msg" class="extra-t"></div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="search-pet-keepers">
+                <h2>Available Pet Keepers</h2>
+                <div class="pet-keeper-search">
+                    <form id="availablePetKeepersForm" onsubmit="findAvailablePetKeepers(); return false;">
+                        <div class="form-group">
+                            <label for="userPetType">Your Pet Type:</label>
+                            <input type="text" id="userPetType" name="userPetType" placeholder="Enter your pet type" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="button">Find Available Pet Keepers</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="pet-keeper-results">
+                    <h3>Available Pet Keepers</h3>
+                    <div id="availablePetKeepersResults" class="results-container"></div>
+                </div>
+            </section>
+
+            <section id="booking-management">
+                <h2>Manage Bookings</h2>
+                <!-- Booking management tools -->
+            </section>
+
+            <section id="messaging-system">
+                <h2>Messages</h2>
+                <!-- Messaging interface -->
+            </section>
+
+            <section id="reviews-feedback">
+                <h2>Reviews and Feedback</h2>
+                <!-- Review submission form -->
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Pet Services</p>
+        </footer>
 
     </body>
 
