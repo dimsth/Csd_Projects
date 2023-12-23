@@ -16,6 +16,8 @@ import static spark.Spark.get;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import static java.lang.Integer.parseInt;
+import mainClasses.PetKeeper;
+import database.tables.EditPetKeepersTable;
 
 /**
  *
@@ -33,6 +35,19 @@ public class PetKeeperRESTAPI {
 
         EditBookingsTable ebt = new EditBookingsTable();
         EditReviewsTable ert = new EditReviewsTable();
+
+        get("/api/petKeepers", (request, response) -> {
+            try {
+                ArrayList<PetKeeper> petKeepers = new EditPetKeepersTable().getAllPetKeepers();
+                response.status(200);
+                response.type("application/json");
+                return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(petKeepers)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                return "Internal Server Error";
+            }
+        });
 
         get(apiPath + "/:id", (request, response) -> {
             resp.clear();

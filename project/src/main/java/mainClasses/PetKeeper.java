@@ -21,6 +21,14 @@ public class PetKeeper {
     String catkeeper,dogkeeper;
     int catprice, dogprice;
 
+    public int getKeeperId() {
+        return keeper_id;
+    }
+
+    public void setKeeperId(int keeper_id) {
+        this.keeper_id = keeper_id;
+    }
+
     public String getProperty() {
         return property;
     }
