@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -318,6 +319,41 @@ public class EditPetKeepersTable {
                 con.close();
             }
         }
+    }
+
+    public ArrayList<PetKeeper> getAvailablePetKeepersByType(String petType) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        ArrayList<PetKeeper> availableKeepers = new ArrayList<>();
+
+        try {
+            String query = "SELECT pk.keeper_id, pk.username, pk.email FROM petkeepers pk WHERE ((pk.catkeeper = 'true' AND ? = 'cat') OR (pk.dogkeeper = 'true' AND ? = 'dog')) AND pk.keeper_id NOT IN (SELECT b.keeper_id FROM bookings b WHERE b.status IN ('requested', 'accepted'))";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, petType);
+            pstmt.setString(2, petType);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                PetKeeper keeper = new PetKeeper();
+                keeper.setKeeperId(rs.getInt("keeper_id"));
+                keeper.setUsername(rs.getString("username"));
+                keeper.setEmail(rs.getString("email"));
+                availableKeepers.add(keeper);
+            }
+            System.out.println(availableKeepers); // For debugging
+            return availableKeepers;
+        } catch (SQLException e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
     }
 
 

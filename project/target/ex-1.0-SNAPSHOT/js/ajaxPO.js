@@ -37,6 +37,42 @@ function getPetKeepers() {
     xhr.send();
 }
 
+function handleFormSubmission(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var petType = document.getElementById("userPetType").value.toLowerCase();
+
+    if (petType==="dog"||petType==="cat") {
+        getAvailablePetKeepersByType(petType);
+    } else {
+        document.getElementById("availablePetKeepersResults").innerHTML = 'Please enter a valid pet type (dog or cat).';
+    }
+}
+
+function getAvailablePetKeepersByType(petType) {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4&&xhr.status===200) {
+            const response = JSON.parse(xhr.responseText);
+            var content = '';
+            var i = 1;
+            for (let id in response.data) {
+                content += createTableFromPetKeeperData(response.data[id], i);
+                i++;
+            }
+            document.getElementById("availablePetKeepersResults").innerHTML = content;
+        } else {
+            document.getElementById('availablePetKeepersResults').innerHTML = 'Request failed. Returned status of '+xhr.status;
+        }
+    };
+    xhr.open("GET", "http://localhost:4562/api/availablePetKeepers/"+encodeURIComponent(petType));
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+// function createTableFromPetKeeperData... (your existing function)
+
+
 function sendRequest(keeperData) {
     console.log("Pet Keeper Details:");
     console.log("ID: " + keeperData.keeper_id);

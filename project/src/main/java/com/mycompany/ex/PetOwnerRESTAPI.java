@@ -8,10 +8,13 @@ import static spark.Spark.*;
 import static spark.Spark.get;
 import database.tables.EditPetsTable;
 import mainClasses.Pet;
+import mainClasses.PetKeeper;
 import servlets.StandardResponse;
 import database.tables.EditBookingsTable;
+import database.tables.EditPetKeepersTable;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,6 +26,7 @@ public class PetOwnerRESTAPI {
         port(4562);
         EditPetsTable editPetsTable = new EditPetsTable();
         EditBookingsTable editBookingsTable = new EditBookingsTable();
+        EditPetKeepersTable editPetKeepersTable = new EditPetKeepersTable();
 
         // Endpoint to check for available pet
         get("/api/petOwners/:ownerId/availablePet", (request, response) -> {
@@ -82,6 +86,18 @@ public class PetOwnerRESTAPI {
             }
         });
 
-
+        get("/api/availablePetKeepers/:petType", (request, response) -> {
+            String petType = request.params(":petType");
+            try {
+                ArrayList<PetKeeper> availableKeepers = editPetKeepersTable.getAvailablePetKeepersByType(petType);
+                response.status(200);
+                response.type("application/json");
+                return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(availableKeepers)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                return "Internal Server Error";
+            }
+        });
     }
 }
