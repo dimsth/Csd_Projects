@@ -45,51 +45,63 @@ function sendRequest(keeperData) {
 
     hasAvailablePet(function (isAvailable, petId) {
         if (isAvailable) {
-//            hasNotRequested(function (canRequest) {
-//                if (canRequest) {
-            console.log("petId: " + petId);
-            var userId = localStorage.getItem('userId');
-            console.log("userId: " + userId);
+            hasNotRequested(function (canRequest) {
+                if (canRequest) {
+                    console.log("petId: " + petId);
+                    var userId = localStorage.getItem('userId');
+                    console.log("userId: " + userId);
 
                     var bookingData = {
                         owner_id: userId,
                         pet_id: petId, // Use the petId from hasAvailablePet
                         keeper_id: keeperData.keeper_id,
-                        fromdate: 0, // Set appropriate date
-                        todate: 0, // Set appropriate date
+                        fromDate: "2023-01-01", // Set appropriate date
+                        toDate: "2023-01-01", // Set appropriate date
                         status: "requested",
-                        price: 0 // Set appropriate price
+                        price: 10 // Set appropriate price
                     };
-                    // Make the booking request here
-//                } else {
-//                    console.error("You have already made a booking request.");
-//                }
-//            });
+
+                    bookingData.owner_id = Number(bookingData.owner_id);
+                    addBookingRequest(bookingData);
+
+                    console.log("shit done?");
+                } else {
+                    console.error("You have already made a booking request.");
+                }
+            });
         } else {
             console.error("No available pets for booking.");
         }
     });
 }
 
-//function hasNotRequested(callback) {
-//    var userId = localStorage.getItem('userId');
-//    var xhr = new XMLHttpRequest();
-//    xhr.onload = function () {
-//        if (xhr.status === 200) {
-//            var response = JSON.parse(xhr.responseText);
-//            if (response.hasRequested) {
-//                callback(false);
-//            } else {
-//                callback(true);
-//            }
-//        } else {
-//            console.error("Error checking booking requests");
-//            callback(false);
-//        }
-//    };
-//    xhr.open('GET', 'api/checkRequest?ownerId=' + userId);
-//    xhr.send();
-//}
+function hasNotRequested(callback) {
+    var userId = localStorage.getItem('userId');
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState === 4) {
+            console.log("Response from server: ", xhr.responseText); // Log the entire response for debugging
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log("Parsed response: ", response); // Log the parsed response
+                if (response.hasRequested) {
+                    console.log("User has an active or pending booking.");
+                    callback(false);
+                } else {
+                    console.log("User can make a booking.");
+                    callback(true);
+                }
+            } else {
+                console.error("Error checking booking requests: " + xhr.status);
+                callback(false);
+            }
+        }
+    };
+    xhr.open('GET', 'http://localhost:4562/api/petOwners/' + userId + '/hasActiveOrPendingBooking');
+    xhr.send();
+}
+
+
 
 function hasAvailablePet(callback) {
     var ownerId = localStorage.getItem('userId');
@@ -113,4 +125,22 @@ function hasAvailablePet(callback) {
     };
     xhr.open('GET', 'http://localhost:4562/api/petOwners/' + ownerId + '/availablePet');
     xhr.send();
+}
+function addBookingRequest(bookingData) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log("Booking request successfully added.");
+                // You might want to redirect the user or update the UI here
+            } else {
+                console.error("Failed to add booking request: " + xhr.responseText);
+            }
+        }
+    };
+    console.log("bookingdata:");
+    console.log(bookingData);
+    xhr.open('POST', 'http://localhost:4562/api/addBooking');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(bookingData));
 }

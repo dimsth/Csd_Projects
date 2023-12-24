@@ -122,7 +122,14 @@ public class EditBookingsTable {
             Connection con = DB_Connection.getConnection();
 
             Statement stmt = con.createStatement();
-
+            System.out.println("Creating new booking with the following details:");
+            System.out.println("Owner ID: " + bor.getOwner_id());
+            System.out.println("Pet ID: " + bor.getPet_id());
+            System.out.println("Keeper ID: " + bor.getKeeper_id());
+            System.out.println("From Date: " + bor.getFromDate());
+            System.out.println("To Date: " + bor.getToDate());
+            System.out.println("Status: " + bor.getStatus());
+            System.out.println("Price: " + bor.getPrice());
             String insertQuery = "INSERT INTO "
                     + " bookings (owner_id,pet_id,keeper_id,fromDate,toDate,status,price)"
                     + " VALUES ("
@@ -146,4 +153,47 @@ public class EditBookingsTable {
             Logger.getLogger(EditBookingsTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    /**
+     * Checks if the specified pet owner has any active or pending booking
+     * requests.
+     *
+     * @param ownerId The ID of the pet owner.
+     * @return true if the owner has active or pending bookings, false
+     * otherwise.
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public boolean hasOwnerMadeRequest(String ownerId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        try {
+            String query = "SELECT status FROM bookings WHERE owner_id='" + ownerId + "' AND status NOT IN ('finished')";
+            ResultSet rs = stmt.executeQuery(query);
+            boolean hasRequest = false;
+            while (rs.next()) {
+                // Print each status
+                String status = rs.getString("status");
+                System.out.println("Booking status for owner " + ownerId + ": " + status);
+
+                // Check if there is at least one booking that is not finished
+                if (!status.equals("finished")) {
+                    hasRequest = true;
+                }
+            }
+            return hasRequest;
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return false;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
 }

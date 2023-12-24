@@ -6,10 +6,12 @@ package com.mycompany.ex;
 
 import static spark.Spark.*;
 import static spark.Spark.get;
-import com.google.gson.Gson;
 import database.tables.EditPetsTable;
 import mainClasses.Pet;
 import servlets.StandardResponse;
+import database.tables.EditBookingsTable;
+import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 
 /**
  *
@@ -20,6 +22,7 @@ public class PetOwnerRESTAPI {
     public static void main(String[] args) {
         port(4562);
         EditPetsTable editPetsTable = new EditPetsTable();
+        EditBookingsTable editBookingsTable = new EditBookingsTable();
 
         // Endpoint to check for available pet
         get("/api/petOwners/:ownerId/availablePet", (request, response) -> {
@@ -42,18 +45,43 @@ public class PetOwnerRESTAPI {
         });
 
         // Endpoint to check if the owner has already made a booking request
-//        get("/api/petOwners/:ownerId/hasRequested", (request, response) -> {
-//            String ownerId = request.params(":ownerId");
-//            try {
-//                boolean hasRequested = editBookingsTable.hasOwnerMadeRequest(ownerId);
-//                response.status(200);
-//                response.type("application/json");
-//                return new Gson().toJson(new StandardResponse(hasRequested));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                response.status(500);
-//                return "Internal Server Error";
-//            }
-//        });
+   get("/api/petOwners/:ownerId/hasActiveOrPendingBooking", (request, response) -> {
+       String ownerId = request.params(":ownerId");
+
+       try {
+           boolean hasRequested = editBookingsTable.hasOwnerMadeRequest(ownerId);
+           response.status(200);
+           response.type("application/json");
+           JsonObject jsonResponse = new JsonObject();
+           jsonResponse.addProperty("hasRequested", hasRequested);
+           jsonResponse.addProperty("status", response.status());
+           return new Gson().toJson(jsonResponse);
+       } catch (Exception e) {
+           e.printStackTrace();
+           response.status(500);
+           JsonObject jsonResponse = new JsonObject();
+           jsonResponse.addProperty("error", "Internal Server Error");
+           jsonResponse.addProperty("status", response.status());
+           return new Gson().toJson(jsonResponse);
+       }
+
+        });
+
+        post("/api/addBooking", (request, response) -> {
+            try {
+                String bookingJson = request.body();
+                System.out.println("Received booking data: " + bookingJson); // Print the raw JSON data
+
+                editBookingsTable.addBookingFromJSON(bookingJson); // Assuming 'editBookingsTable' is an instance of EditBookingsTable
+                response.status(200);
+                return "Booking request successfully added";
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500); // HTTP 500 Internal Server Error
+                return "Internal Server Error";
+            }
+        });
+
+
     }
 }
