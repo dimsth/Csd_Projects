@@ -11,16 +11,16 @@ package mainClasses;
  */
 public class Booking {
 
-    int borrowing_id, owner_id, pet_id, keeper_id;
-    String fromDate, toDate, status;
+    int booking_id, owner_id, pet_id, keeper_id;
+    String fromdate, todate, status;
     int price;
 
     public int getBorrowing_id() {
-        return borrowing_id;
+        return booking_id;
     }
 
     public void setBorrowing_id(int borrowing_id) {
-        this.borrowing_id = borrowing_id;
+        this.booking_id = borrowing_id;
     }
 
     public int getOwner_id() {
@@ -56,19 +56,19 @@ public class Booking {
     }
 
     public String getFromDate() {
-        return fromDate;
+        return fromdate;
     }
 
     public void setFromDate(String fromDate) {
-        this.fromDate = fromDate;
+        this.fromdate = fromDate;
     }
 
     public String getToDate() {
-        return toDate;
+        return todate;
     }
 
     public void setToDate(String toDate) {
-        this.toDate = toDate;
+        this.todate = toDate;
     }
 
     public String getStatus() {

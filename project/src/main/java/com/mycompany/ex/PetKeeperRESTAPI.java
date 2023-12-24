@@ -81,7 +81,9 @@ public class PetKeeperRESTAPI {
                         System.err.println("Invalid float format");
                     }
                 }
-                sum = sum / reviews.size();
+                if (sum != 0) {
+                    sum = sum / reviews.size();
+                }
                 resp.add(String.valueOf(sum));
 
                 for (Review rev : reviews) {
@@ -90,7 +92,7 @@ public class PetKeeperRESTAPI {
 
                 response.status(200);
                 response.type("application/json");
-                return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(resp)));
+                return resp;
             } catch (Exception e) {
                 e.printStackTrace();
                 response.status(500);
@@ -107,6 +109,7 @@ public class PetKeeperRESTAPI {
 
                 for (Booking book : bookings) {
                     if (book.getStatus().equals("requested") || book.getStatus().equals("accepted")) {
+                        resp.add(String.valueOf(book.getBorrowing_id()));
                         resp.add(String.valueOf(book.getOwner_id()));
                         resp.add(String.valueOf(book.getPet_id()));
                         resp.add(book.getFromDate());
@@ -116,7 +119,7 @@ public class PetKeeperRESTAPI {
                 }
                 response.status(200);
                 response.type("application/json");
-                return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(resp)));
+                return resp;
             } catch (Exception e) {
                 e.printStackTrace();
                 response.status(500);
@@ -125,7 +128,7 @@ public class PetKeeperRESTAPI {
             }
         });
 
-        get(apiPath + "/booking/:id/:status", (request, response) -> {
+        put(apiPath + "/booking/:id/:status", (request, response) -> {
             resp.clear();
             int id = parseInt(request.params(":id"));
             String status = request.params(":status");
@@ -135,7 +138,7 @@ public class PetKeeperRESTAPI {
                 resp.add("1");
                 response.status(200);
                 response.type("application/json");
-                return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(resp)));
+                return resp;
             } catch (Exception e) {
                 e.printStackTrace();
                 response.status(500);

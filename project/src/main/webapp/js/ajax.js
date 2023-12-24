@@ -1,3 +1,4 @@
+let user;
 
 function createTableFromJSON(data) {
     var html = "<table><tr><th>Category</th><th>Value</th><th></th></tr>";
@@ -502,6 +503,9 @@ function checkLoggedIn() {
                     lr.style.display = "none";
                     pl.style.display = "flex";
                 }
+                
+                user = JSON.parse(xhr.responseText);
+                user = user["keeper_id"];
             } else {
                 console.log("Failed");
             }

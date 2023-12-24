@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #d8dad3;
+  background-color: #d8dad3 !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -36,6 +36,29 @@ header p {
 
 main{
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#logout {
+    cursor: pointer;
+}
+
+.cont{
+    margin: 20px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat{
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    background-color: #f2f2f2;
+}
+
+.display-chat,
+.display-owner{
+    height: 550px;
 }
