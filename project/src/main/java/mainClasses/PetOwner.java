@@ -20,6 +20,13 @@ public class PetOwner {
     String telephone;
     String personalpage;
 
+    public int getOwnerId() {
+        return owner_id;
+    }
+
+    public void setOwnerId(int keeper_id) {
+        this.owner_id = owner_id;
+    }
     public String getPersonalpage() {
         return personalpage;
     }

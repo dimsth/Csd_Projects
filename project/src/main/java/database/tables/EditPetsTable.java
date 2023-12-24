@@ -184,4 +184,35 @@ public class EditPetsTable {
             Logger.getLogger(EditPetsTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public Pet getAvailablePetForOwner(String ownerId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        Pet availablePet = null;
+        ResultSet rs;
+        try {
+            // Assuming there is a field in the bookings table that indicates if the booking is active
+            // This query needs to be adjusted based on your actual database schema and logic to determine availability
+            String query = "SELECT * FROM pets WHERE owner_id= '" + ownerId + "' AND pet_id NOT IN (SELECT pet_id FROM bookings WHERE status IN ('active', 'requested', 'accepted'))";
+            rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                availablePet = gson.fromJson(json, Pet.class);
+            }
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return availablePet;
+    }
+
 }

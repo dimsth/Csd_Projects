@@ -274,7 +274,9 @@ function getUser(callback) {
     xhr.onload = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                // Pet Keeper found
+                var responseData = JSON.parse(xhr.responseText);
+                localStorage.setItem('userId', responseData.keeper_id);
+
                 callback(0, xhr.responseText, "PetKeeper");
             } else {
                 // If not found as Pet Keeper, try as Pet Owner
@@ -282,10 +284,11 @@ function getUser(callback) {
                 xhrOwner.onload = function () {
                     if (xhrOwner.readyState === 4) {
                         if (xhrOwner.status === 200) {
-                            // Pet Owner found
+                            var responseData = JSON.parse(xhrOwner.responseText);
+                            localStorage.setItem('userId', responseData.owner_id); // Assuming the response contains owner_id
+
                             callback(0, xhrOwner.responseText, "PetOwner");
                         } else {
-                            // Neither found
                             callback(1, "");
                         }
                     }
@@ -305,7 +308,7 @@ function getUser(callback) {
 function loginUser() {
     event.preventDefault();
 
-    getUser(function (ret, response, userType) {
+    getUser(function (ret, response, userType, userId) {
         var main = document.getElementById("main-cont");
         var error = document.getElementById("error");
         var table = document.getElementById("table");
@@ -314,7 +317,10 @@ function loginUser() {
             if (userType === "PetOwner") {
 
                 localStorage.setItem('userType', 'PetOwner');
-                console.log("Pet Keeper Logged In");
+                console.log("PetOwner Logged In");
+
+//                var userId = localStorage.getItem('userId');
+//                console.log(userId);
 
                 main.style.display = "none";
                 error.style.display = "";
@@ -326,7 +332,10 @@ function loginUser() {
             } else {
                 // Handle Pet Keeper login
                 localStorage.setItem('userType', 'PetKeeper');
+
                 console.log("Pet Keeper Logged In");
+                var userId = localStorage.getItem('userId');
+                console.log(userId);
 
                 main.style.display = "none";
                 error.style.display = "";
@@ -423,8 +432,12 @@ function hideAllInputs() {
         if (xhr.readyState === 4) {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log("Success");
+                var userId = localStorage.getItem('userId');
+
+                console.log(userId);
 
                 localStorage.removeItem('userType');
+                localStorage.removeItem('userId');
                 console.log("User type cleared from localStorage");
 
                 var logout = document.getElementById("logout");          
