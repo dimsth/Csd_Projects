@@ -10,11 +10,12 @@ import database.tables.EditPetsTable;
 import mainClasses.Pet;
 import mainClasses.PetKeeper;
 import servlets.StandardResponse;
-import database.tables.EditBookingsTable;
 import database.tables.EditPetKeepersTable;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import mainClasses.Booking;
+import database.tables.EditBookingsTable;
 
 /**
  *
@@ -99,5 +100,50 @@ public class PetOwnerRESTAPI {
                 return "Internal Server Error";
             }
         });
+
+        get("/api/petOwners/:ownerId/petType", (request, response) -> {
+            String ownerId = request.params(":ownerId");
+            try {
+                // Assuming the method getPetTypeByOwnerId returns the type of pet for a given owner ID
+                String petType = editPetsTable.getPetTypeByOwnerId(ownerId);
+                if (petType != null) {
+                    response.status(200);
+                    response.type("application/json");
+                    JsonObject jsonResponse = new JsonObject();
+                    jsonResponse.addProperty("petType", petType);
+                    return new Gson().toJson(jsonResponse);
+                } else {
+                    response.status(204); // No Content
+                    return "";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                JsonObject jsonResponse = new JsonObject();
+                jsonResponse.addProperty("error", "Internal Server Error");
+                jsonResponse.addProperty("status", response.status());
+                return new Gson().toJson(jsonResponse);
+            }
+        });
+
+        get("/ownerAPI/booking/:ownerId", (request, response) -> {
+            String ownerId = request.params(":ownerId");
+            try {
+                ArrayList<Booking> bookingsForOwner = editBookingsTable.getBookingsForOwner(ownerId);
+                if (!bookingsForOwner.isEmpty()) {
+                    response.status(200);
+                    response.type("application/json");
+                    return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(bookingsForOwner)));
+                } else {
+                    response.status(204); // No Content
+                    return "";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                return "Internal Server Error";
+            }
+        });
+
     }
 }

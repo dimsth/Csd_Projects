@@ -214,5 +214,29 @@ public class EditPetsTable {
         }
         return availablePet;
     }
+    public String getPetTypeByOwnerId(String ownerId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        try {
+            String query = "SELECT type FROM pets WHERE owner_id = '" + ownerId + "'";
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                return rs.getString("type");
+            } else {
+                return null; // No pet found for the given owner ID
+            }
+        } catch (SQLException e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return null;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
 
 }

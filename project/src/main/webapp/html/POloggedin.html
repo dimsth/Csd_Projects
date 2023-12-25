@@ -135,33 +135,48 @@
                 <h2>Available Pet Keepers</h2>
                 <div class="row">
                     <div class="col-3" id="choices">
-
-                    <div class="pet-keeper-search">
-                        <form id="availablePetKeepersForm" onsubmit="handleFormSubmission(event);">
-                            <div class="form-group">
-                                <label for="userPetType">Your Pet Type:</label>
-                                <input type="text" id="userPetType" name="userPetType" placeholder="Enter your pet type" required>
+                        <div class="pet-keeper-search">
+                            <form id="availablePetKeepersForm" onsubmit="handleFormSubmission(event);">
+                                <div class="form-group">
+                                    <label for="userPetType">Your Pet Type:</label>
+                                    <input type="text" id="userPetType" name="userPetType" placeholder="Enter your pet type" required>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="button">Get Pet Keepers</button>
+                                </div>
+                            </form>
+                            <!-- Booking Request Form -->
+                            <div class="booking-request-form">
+                                <h2></h2>
+                                <form>
+                                    <div class="form-group">
+                                        <label for="fromDate">From Date:</label>
+                                        <input type="date" id="fromDate" name="fromDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="toDate">To Date:</label>
+                                        <input type="date" id="toDate" name="toDate" required>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="col">
-                                <button type="submit" class="button">Get Pet Keepers</button>
-                            </div>
-                        </form>
-
-                    </div>
+                        </div>
                     </div>
 
-                <div class="col-8" id="output">
-
+                    <div class="col-8" id="output">
                         <h3 class="section-title">Available Pet Keepers</h3>
                         <div id="availablePetKeepersResults" class="extra-t"></div>
-                </div>
-                </div>
 
+
+                    </div>
+                </div>
             </section>
+
 
             <section id="booking-management">
                 <h2>Manage Bookings</h2>
-                <!-- Booking management tools -->
+                <div class="col-lg-11 cont">
+                    <div id="owner_bookings_table"></div>
+                </div>
             </section>
 
             <section id="messaging-system">

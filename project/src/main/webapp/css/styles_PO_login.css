@@ -185,3 +185,22 @@ footer {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.bookings-table th, .bookings-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.bookings-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.bookings-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

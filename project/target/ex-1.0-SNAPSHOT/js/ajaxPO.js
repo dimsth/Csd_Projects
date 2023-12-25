@@ -1,3 +1,7 @@
+
+window.onload = function () {
+    getOwnerBookings();
+};
 function createTableFromPetKeeperData(data, index) {
     var html = "<div class='col-5 extra-tt'><h4>Pet Keeper " + index + "</h4><table class='table table-striped'><tr><th>Category</th><th>Value</th></tr>";
     for (const x in data) {
@@ -8,42 +12,50 @@ function createTableFromPetKeeperData(data, index) {
     html += "</table>";
 
     // Προσθήκη κουμπιού Request με τις πληροφορίες του PetKeeper
-    html += "<button onclick='sendRequest(" + JSON.stringify(data) + ")' class='button'>Request</button>";
+    html += "<button onclick='sendRequest("+JSON.stringify(data)+")' class='button'>Request</button>";
 
     html += "</div>";
     return html;
 }
 
-function getPetKeepers() {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            var content = '';
-            var i = 1; // Starting index for pet keepers
-            for (let id in response.data) {
-                content += createTableFromPetKeeperData(response.data[id], i);
-                i++;
-            }
-            document.getElementById("availablePetKeepersResults").innerHTML = content;
-        } else if (xhr.status !== 200) {
-            document.getElementById('availablePetKeepersResults').innerHTML = 'Request failed. Returned status of ' + xhr.status;
-        }
-    };
+function createBookingsTable(bookings) {
+    if (!bookings||bookings.length===0) {
+        return '<p>No bookings available.</p>';
+    }
 
-    xhr.open("GET", "http://localhost:4568/api/petKeepers");
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+    var tableHtml = '<table class="bookings-table"><thead><tr><th>Booking ID</th><th>Pet ID</th><th>Keeper ID</th><th>From Date</th><th>To Date</th><th>Status</th><th>Price</th></tr></thead><tbody>';
+
+    bookings.forEach(function (booking) {
+        tableHtml += '<tr>'+
+                '<td>'+booking.booking_id+'</td>'+
+                '<td>'+booking.pet_id+'</td>'+
+                '<td>'+booking.keeper_id+'</td>'+
+                '<td>'+booking.fromdate+'</td>'+// Changed to match the property names
+                '<td>'+booking.todate+'</td>'+// Changed to match the property names
+                '<td>'+booking.status+'</td>'+
+                '<td>'+booking.price+'</td>'+
+                '</tr>';
+    });
+
+    tableHtml += '</tbody></table>';
+
+    return tableHtml;
 }
 
 function handleFormSubmission(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
 
+    var ownerId = localStorage.getItem('userId'); // Assuming this is how you get the ownerId
     var petType = document.getElementById("userPetType").value.toLowerCase();
 
     if (petType==="dog"||petType==="cat") {
-        getAvailablePetKeepersByType(petType);
+        checkPetTypeAndFetchKeepers(ownerId, petType, function (isMatchingType) {
+            if (isMatchingType) {
+                getAvailablePetKeepersByType(petType);
+            } else {
+                document.getElementById("availablePetKeepersResults").innerHTML = 'Your pet type does not match the entered type.';
+            }
+        });
     } else {
         document.getElementById("availablePetKeepersResults").innerHTML = 'Please enter a valid pet type (dog or cat).';
     }
@@ -74,10 +86,14 @@ function getAvailablePetKeepersByType(petType) {
 
 
 function sendRequest(keeperData) {
+
     console.log("Pet Keeper Details:");
     console.log("ID: " + keeperData.keeper_id);
     console.log("Name: " + keeperData.username); // ή οποιαδήποτε άλλη πληροφορία υπάρχει στο αντικείμενο
     console.log("Email: " + keeperData.email);
+    var fromDate = document.getElementById('fromDate').value;
+    var toDate = document.getElementById('toDate').value;
+    var resultsElement = document.getElementById("availablePetKeepersResults");
 
     hasAvailablePet(function (isAvailable, petId) {
         if (isAvailable) {
@@ -85,28 +101,34 @@ function sendRequest(keeperData) {
                 if (canRequest) {
                     console.log("petId: " + petId);
                     var userId = localStorage.getItem('userId');
-                    console.log("userId: " + userId);
+                    console.log("keeperData.keeper_id: "+keeperData.keeper_id);
+                    console.log("fromDate: "+fromDate);
+                    console.log("toDate: "+toDate);
 
+                    if (fromDate&&toDate) {
                     var bookingData = {
                         owner_id: userId,
                         pet_id: petId, // Use the petId from hasAvailablePet
-                        keeper_id: keeperData.keeper_id,
-                        fromDate: "2023-01-01", // Set appropriate date
-                        toDate: "2023-01-01", // Set appropriate date
+                            keeper_id: keeperData.keeper_id,
+                            fromdate: fromDate,
+                        todate: toDate,
                         status: "requested",
                         price: 10 // Set appropriate price
                     };
 
                     bookingData.owner_id = Number(bookingData.owner_id);
                     addBookingRequest(bookingData);
+                        resultsElement.innerHTML = "Booking request sent.";
 
-                    console.log("shit done?");
+                    } else {
+                        resultsElement.innerHTML = "Please enter all required fields todate and fromdate.";
+                    }
                 } else {
-                    console.error("You have already made a booking request.");
+                    resultsElement.innerHTML = "You have already made a booking request.";
                 }
             });
         } else {
-            console.error("No available pets for booking.");
+            resultsElement.innerHTML = "No available pets for booking.";
         }
     });
 }
@@ -179,4 +201,48 @@ function addBookingRequest(bookingData) {
     xhr.open('POST', 'http://localhost:4562/api/addBooking');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(bookingData));
+}
+function checkPetTypeAndFetchKeepers(ownerId, enteredPetType, callback) {
+    fetch(`http://localhost:4562/api/petOwners/${ownerId}/petType`)
+            .then(response=>{
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Could not fetch pet type');
+                }
+            })
+            .then(data=>{
+                if (data.petType===enteredPetType) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            })
+            .catch(error=>{
+                console.error('Error:', error);
+                callback(false);
+            });
+}
+
+function getOwnerBookings() {
+    var ownerId = localStorage.getItem('userId');
+
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4) {
+            if (xhr.status===200) {
+                var response = JSON.parse(xhr.responseText);
+                var bookings = response.data; // Extract the array from the 'data' property
+                document.getElementById("owner_bookings_table").innerHTML = createBookingsTable(bookings);
+            } else {
+                document.getElementById('msg').innerHTML = 'Request failed. Status: '+xhr.status;
+            }
+        }
+    };
+
+
+
+    xhr.open("GET", "http://localhost:4562/ownerAPI/booking/"+ownerId);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.send();
 }
