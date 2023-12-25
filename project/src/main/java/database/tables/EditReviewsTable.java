@@ -116,4 +116,55 @@ public class EditReviewsTable {
             Logger.getLogger(EditPetsTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public ArrayList<Review> getReviewsForOwner(String ownerId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        ArrayList<Review> reviews = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM reviews WHERE owner_id = '" + ownerId + "'";
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Review review = gson.fromJson(json, Review.class);
+                reviews.add(review);
+            }
+            return reviews;
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return null;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+    public boolean reviewExistsForBooking(String ownerId, String keeperId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        try {
+            String query = "SELECT * FROM reviews WHERE owner_id = '" + ownerId + "' AND keeper_id = '" + keeperId + "'";
+            rs = stmt.executeQuery(query);
+            return rs.next();  // If there's at least one row, the review exists
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return false;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
 }

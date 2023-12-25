@@ -222,5 +222,33 @@ public class EditBookingsTable {
             }
         }
     }
+    public Booking getBookingById(String bookingId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs;
+        try {
+            String query = "SELECT * FROM bookings WHERE booking_id = '" + bookingId + "'";
+            rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Booking booking = gson.fromJson(json, Booking.class);
+                return booking;
+            } else {
+                return null; // Booking not found
+            }
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return null;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
 
 }

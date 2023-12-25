@@ -7,6 +7,7 @@ package com.mycompany.ex;
 import static spark.Spark.*;
 import static spark.Spark.get;
 import database.tables.EditPetsTable;
+import mainClasses.Review;
 import mainClasses.Pet;
 import mainClasses.PetKeeper;
 import servlets.StandardResponse;
@@ -16,6 +17,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import mainClasses.Booking;
 import database.tables.EditBookingsTable;
+import database.tables.EditReviewsTable;
 
 /**
  *
@@ -28,6 +30,7 @@ public class PetOwnerRESTAPI {
         EditPetsTable editPetsTable = new EditPetsTable();
         EditBookingsTable editBookingsTable = new EditBookingsTable();
         EditPetKeepersTable editPetKeepersTable = new EditPetKeepersTable();
+        EditReviewsTable editReviewsTable = new EditReviewsTable();
 
         // Endpoint to check for available pet
         get("/api/petOwners/:ownerId/availablePet", (request, response) -> {
@@ -86,6 +89,22 @@ public class PetOwnerRESTAPI {
                 return "Internal Server Error";
             }
         });
+        post("/api/submitReview", (request, response) -> {
+            try {
+                String reviewJson = request.body();
+                System.out.println("Received review data: " + reviewJson); // Print the raw JSON data for debugging
+
+                editReviewsTable.addReviewFromJSON(reviewJson);
+
+                response.status(200); // HTTP 200 OK
+                return "Review successfully submitted";
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500); // HTTP 500 Internal Server Error
+                return "Internal Server Error";
+            }
+        });
+
 
         get("/api/availablePetKeepers/:petType", (request, response) -> {
             String petType = request.params(":petType");
@@ -137,6 +156,49 @@ public class PetOwnerRESTAPI {
                 } else {
                     response.status(204); // No Content
                     return "";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                return "Internal Server Error";
+            }
+        });
+
+        get("/ownerAPI/reviews/:ownerId", (request, response) -> {
+            System.out.println("nigga15");
+            String ownerId = request.params(":ownerId");
+            try {
+                ArrayList<Review> reviewsForOwner = editReviewsTable.getReviewsForOwner(ownerId);
+                if (!reviewsForOwner.isEmpty()) {
+                    response.status(200);
+                    response.type("application/json");
+                    return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(reviewsForOwner)));
+                } else {
+                    response.status(204); // No Content
+                    return "";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                return "Internal Server Error";
+            }
+        });
+        get("/api/checkReview/:bookingId", (request, response) -> {
+            String bookingId = request.params(":bookingId");
+            try {
+                Booking booking = editBookingsTable.getBookingById(bookingId);
+                if (booking != null) {
+                    String ownerId = String.valueOf(booking.getOwner_id());
+                    String keeperId = String.valueOf(booking.getKeeper_id());
+                    boolean reviewExists = editReviewsTable.reviewExistsForBooking(ownerId, keeperId);
+                    response.status(200);
+                    response.type("application/json");
+                    JsonObject jsonResponse = new JsonObject();
+                    jsonResponse.addProperty("exists", reviewExists);
+                    return new Gson().toJson(jsonResponse);
+                } else {
+                    response.status(404); // Booking not found
+                    return "Booking not found";
                 }
             } catch (Exception e) {
                 e.printStackTrace();

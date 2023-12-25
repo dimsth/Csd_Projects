@@ -1,7 +1,9 @@
 
 window.onload = function () {
     getOwnerBookings();
+    getOwnerReviews();
 };
+
 function createTableFromPetKeeperData(data, index) {
     var html = "<div class='col-5 extra-tt'><h4>Pet Keeper " + index + "</h4><table class='table table-striped'><tr><th>Category</th><th>Value</th></tr>";
     for (const x in data) {
@@ -34,6 +36,46 @@ function createBookingsTable(bookings) {
                 '<td>'+booking.todate+'</td>'+// Changed to match the property names
                 '<td>'+booking.status+'</td>'+
                 '<td>'+booking.price+'</td>'+
+                '<td>'+getActionButtons(booking)+'</td>'+
+                '</tr>';
+    });
+
+    tableHtml += '</tbody></table>';
+
+    return tableHtml;
+}
+function getActionButtons(booking) {
+    var buttons = '';
+
+    // Message Pet Keeper Button
+    if (booking.status==='accepted') {
+        buttons += '<button onclick="messageKeeper('+booking.keeper_id+')">Message Keeper</button> ';
+    }
+
+    // Submit Review Button
+    if (booking.status==='finished') {
+        buttons += '<button onclick="checkAndOpenReviewForm('+booking.booking_id+','+booking.keeper_id+')">Submit Review</button>';
+    }
+
+    return buttons;
+}
+function createReviewsTable(reviews) {
+    if (!Array.isArray(reviews)) {
+        console.error('Expected an array of reviews, but received:', reviews);
+        return '<p>Error loading reviews.</p>';
+    }
+    if (!reviews||reviews.length===0) {
+        return '<p>No reviews available.</p>';
+    }
+
+    var tableHtml = '<table class="reviews-table"><thead><tr><th>Review ID</th><th>Keeper ID</th><th>Review Text</th><th>Score</th></tr></thead><tbody>';
+
+    reviews.forEach(function (review) {
+        tableHtml += '<tr>'+
+                '<td>'+review.review_id+'</td>'+
+                '<td>'+review.keeper_id+'</td>'+
+                '<td>'+review.reviewText+'</td>'+
+                '<td>'+review.reviewScore+'</td>'+
                 '</tr>';
     });
 
@@ -42,6 +84,17 @@ function createBookingsTable(bookings) {
     return tableHtml;
 }
 
+function messageKeeper(keeperId) {
+    // Implement messaging functionality
+    console.log('Messaging keeper with ID:', keeperId);
+    // You might open a messaging modal or redirect to a messaging page
+}
+
+function submitReview(keeperId) {
+    // Implement review submission functionality
+    console.log('Submitting review for keeper with ID:', keeperId);
+    // You might open a review submission form in a modal or a new page
+}
 function handleFormSubmission(event) {
     event.preventDefault();
 
@@ -245,4 +298,107 @@ function getOwnerBookings() {
     xhr.open("GET", "http://localhost:4562/ownerAPI/booking/"+ownerId);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.send();
+}
+function getOwnerReviews() {
+    var ownerId = localStorage.getItem('userId');
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4&&xhr.status===200) {
+            var response = JSON.parse(xhr.responseText);
+            var reviews = response.data; // Extract the array from the 'data' property
+            document.getElementById("reviews_table").innerHTML = createReviewsTable(reviews);
+        } else {
+            document.getElementById('msg').innerHTML = 'Failed to load reviews. Status: '+xhr.status;
+        }
+    };
+    xhr.open("GET", "http://localhost:4562/ownerAPI/reviews/"+ownerId);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.send();
+}
+
+
+function getPetKeepers() {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4&&xhr.status===200) {
+            const response = JSON.parse(xhr.responseText);
+            var content = '';
+            var i = 1; // Starting index for pet keepers
+            for (let id in response.data) {
+                content += createTableFromPetKeeperData(response.data[id], i);
+                i++;
+            }
+            document.getElementById("availablePetKeepersResults").innerHTML = content;
+        } else if (xhr.status!==200) {
+            document.getElementById('availablePetKeepersResults').innerHTML = 'Request failed. Returned status of '+xhr.status;
+        }
+    };
+
+    xhr.open("GET", "http://localhost:4568/api/petKeepers");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+function checkAndOpenReviewForm(bookingId, keeper_id) {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4&&xhr.status===200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.exists) {
+                alert("Review already submitted for this booking.");
+            } else {
+                openReviewForm(bookingId, keeper_id);
+            }
+        }
+    };
+    xhr.open("GET", "http://localhost:4562/api/checkReview/"+bookingId);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.send();
+}
+function openReviewForm(bookingId, keeper_id) {
+    var formHtml = '<div id="reviewForm" class="review-form">'+
+            '<h3 class="review-form-title">Submit Review</h3>'+
+            '<textarea id="reviewText" class="review-textarea"></textarea><br>'+
+            '<h3 class="review-form-title">Review Score(1-5)</h3>'+
+            '<input type="number" id="reviewScore" class="review-score" min="1" max="5"><br>'+
+            '<button onclick="submitReview('+bookingId+','+keeper_id+')" class="review-submit-btn">Submit</button>'+
+            '</div>';
+
+    document.getElementById('review-form-container').innerHTML = formHtml;
+}
+
+function submitReview(bookingId, keeperId) {
+    console.log("keeper_id: "+keeperId);
+
+    var reviewText = document.getElementById('reviewText').value;
+    var reviewScore = document.getElementById('reviewScore').value;
+    var ownerId = localStorage.getItem('userId');
+
+    // Perform validation if needed
+
+    var reviewData = {
+        owner_id: ownerId,
+        keeper_id: keeperId,
+        reviewText: reviewText,
+        reviewScore: reviewScore
+    };
+    console.log(reviewData);
+    // AJAX POST request to submit the review
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4) {
+            if (xhr.status===200) {
+                // Show a success message to the user
+                alert("Review successfully submitted.");
+                // Optionally clear the form or hide it
+                document.getElementById('reviewForm').style.display = 'none';
+            } else {
+                // Show an error message to the user
+                alert("Failed to submit review. Please try again.");
+            }
+        }
+    };
+    xhr.open("POST", "http://localhost:4562/api/submitReview");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(reviewData));
 }
