@@ -340,11 +340,16 @@ public class EditPetKeepersTable {
                 keeper.setEmail(rs.getString("email"));
                 keeper.setLat(rs.getDouble("lat"));
                 keeper.setLon(rs.getDouble("lon"));
-                keeper.setCatprice(rs.getInt("catprice"));  // Set catprice
-                keeper.setDogprice(rs.getInt("dogprice"));  // Set dogprice
+
+                // Set either catprice or dogprice based on petType
+                if("cat".equals(petType)) {
+                    keeper.setCatprice(rs.getInt("catprice"));
+                } else if("dog".equals(petType)) {
+                    keeper.setDogprice(rs.getInt("dogprice"));
+                }
+
                 availableKeepers.add(keeper);
             }
-
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } finally {
