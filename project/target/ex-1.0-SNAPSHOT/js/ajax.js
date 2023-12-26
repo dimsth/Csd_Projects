@@ -14,6 +14,33 @@ function createTableFromJSON(data) {
     return html;
 
 }
+function getPetKeepers() {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4&&xhr.status===200) {
+            const response = JSON.parse(xhr.responseText);
+            document.getElementById("availablePetKeepersResults").innerHTML = createTableForNuNUSers(response.data);
+        } else {
+            document.getElementById('availablePetKeepersResults').innerHTML = 'Request failed. Returned status of '+xhr.status;
+        }
+    };
+
+    xhr.open("GET", "http://localhost:4568/api/petKeepers");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+function createTableForNuNUSers(data) {
+    var html = "<table class='custom-pet-keeper-table'><thead><tr><th>Name</th><th>Email</th></tr></thead><tbody>";
+
+    data.forEach(petKeeper=>{
+        html += `<tr><td>${petKeeper.username}</td><td>${petKeeper.email}</td></tr>`;
+    });
+
+    html += "</tbody></table>";
+    return html;
+}
+
 
 function getPetKeeperUser(string, callback) {
     var xhr = new XMLHttpRequest();

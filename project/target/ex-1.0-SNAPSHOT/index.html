@@ -19,7 +19,7 @@
         <script src="js/ajax.js" defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
-   <body onload="checkLoggedIn()">
+<body onload="checkLoggedIn()">
   <header>
     <div class="container text-center ">
       <div class="row">
@@ -27,7 +27,6 @@
           <img src="img/img_01.png" alt="ranger-header">
         </div>
         <div class="col-8 align-self-center">
-          <h1>Pet Care</h1>
         </div>
         <div id="lr" class="col lr">      
             <p><a href="html/login.html">Login</a></p>
@@ -40,19 +39,37 @@
       </div>
     </div>
   </header>
-        <main class="heroSection">
-            <div class="heroText">
-                <h1>Search for Pets!</h1>
-                <p>Push yourself, no one else is going to do it for you.</p>
-                <form action="html/pets.html">
-                    <button type='submit' class="joinNow">Pets</button>
-                </form>
-            </div>
+       <main class="mainSection">
+           <div class="heroSection">
+               <div class="heroText">
+                   <h2 style="color: black;">who looks over pets!</h2>
+                   <form onsubmit="event.preventDefault(); getPetKeepers();">
+                       <button type='submit' class="joinNow">View PetKeepers</button>
+                   </form>
+               </div>
+           </div>
 
+            <section id="petKeepersSection" class="container mt-4">
+                <div id="availablePetKeepersResults"></div> <!-- Container where pet keepers will be displayed -->
+            </section>
         </main>
-       <footer class="py-3 footer">
-           <p class="text-center ">&copy; 2023 CSD, csd5010</p>
-       </footer>
-   </body>
 
+
+   </body>
+   <footer class="py-3 footer">
+       <div class="container">
+           <h3>Useful Pet Resources</h3>
+           <ul>
+               <li><a href="https://www.i-pet.gr/" target="_blank">Σελίδα για Κατοικίδια</a></li>
+               <li><a href="https://allaboutpets.gr/katoikidia-zoa-gia-mesa-sto-spiti/" target="_blank">Σελίδα για Κατοικίδια (Ζώα για μέσα στο σπίτι)</a></li>
+           </ul>
+
+           <h3>Follow Us</h3>
+           <ul>
+               <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+               <li><a href="https://www.twitter.com/" target="_blank">Twitter</a></li>
+           </ul>
+       </div>
+       <p class="text-center">&copy; 2023 CSD, csd5010</p>
+   </footer>
 </html>
