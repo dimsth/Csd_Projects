@@ -4,8 +4,7 @@ window.onload = function () {
     getOwnerReviews();
     checkLoggedIn();
 };
-
-function createTableFromPetKeeperData(data, index) {
+function createTableFromPetKeeperData(data, index, petType) {
     var html = "<div class='col-5 extra-tt'><h4>Pet Keeper "+index+"</h4><table class='table table-striped'><tr><th>Category</th><th>Value</th></tr>";
     for (const x in data) {
         var category = x;
@@ -13,6 +12,14 @@ function createTableFromPetKeeperData(data, index) {
 
         if (category==='lat'||category==='lon'||category==='email'||category==='keeper_id') {
             continue;
+        }
+
+        if (category==='catprice'&&petType!=='cat') {
+            continue; // Skip catprice if petType is not cat
+        }
+
+        if (category==='dogprice'&&petType!=='dog') {
+            continue; // Skip dogprice if petType is not dog
         }
 
         if (category==='distance') {
@@ -23,9 +30,8 @@ function createTableFromPetKeeperData(data, index) {
     }
     html += "</table>";
 
-    // Προσθήκη κουμπιού Request με τις πληροφορίες του PetKeeper
+    // Add Request button
     html += "<button onclick='sendRequest("+JSON.stringify(data)+")' class='button'>Request</button>";
-
     html += "</div>";
     return html;
 }
@@ -145,8 +151,9 @@ async function getAvailablePetKeepersByType(petType) {
         // Display the sorted list
         var content = '';
         keepers.forEach((keeper, index)=>{
-            content += createTableFromPetKeeperData(keeper, index+1);
+            content += createTableFromPetKeeperData(keeper, index+1, petType); // Pass petType here
         });
+
         document.getElementById("availablePetKeepersResults").innerHTML = content;
 
     } catch (error) {
@@ -201,6 +208,17 @@ function sendRequest(keeperData) {
     var toDate = document.getElementById('toDate').value;
     var resultsElement = document.getElementById("availablePetKeepersResults");
 
+    var startDate = new Date(fromDate);
+    var endDate = new Date(toDate);
+    var timeDiff = endDate.getTime()-startDate.getTime();
+    var nights = Math.ceil(timeDiff/(1000*3600*24));
+
+    // Check if dates are valid
+    if (isNaN(nights)||nights<1) {
+        resultsElement.innerHTML = "Please enter valid dates.";
+        return;
+    }
+
     hasAvailablePet(function (isAvailable, petId) {
         if (isAvailable) {
             hasNotRequested(function (canRequest) {
@@ -212,14 +230,17 @@ function sendRequest(keeperData) {
                     console.log("toDate: "+toDate);
 
                     if (fromDate&&toDate) {
+                        var pricePerNight = keeperData.catprice||keeperData.dogprice; // Use the correct price based on pet type
+                        var totalBookingPrice = pricePerNight*nights;
+
                     var bookingData = {
-                        owner_id: userId,
-                        pet_id: petId, // Use the petId from hasAvailablePet
+                            owner_id: userId,
+                            pet_id: petId,
                             keeper_id: keeperData.keeper_id,
                             fromdate: fromDate,
-                        todate: toDate,
-                        status: "requested",
-                        price: 10 // Set appropriate price
+                            todate: toDate,
+                            status: "requested",
+                            price: totalBookingPrice
                     };
 
                     bookingData.owner_id = Number(bookingData.owner_id);
