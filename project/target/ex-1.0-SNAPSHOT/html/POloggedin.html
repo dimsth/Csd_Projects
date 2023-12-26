@@ -182,7 +182,16 @@
 
             <section id="messaging-system">
                 <h2>Messages</h2>
-                <!-- Messaging interface -->
+                <div class="chat">
+                    <div class="display-keeper" id="display-keeper"></div>
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputGroup" placeholder="Message...">
+                            <label for="floatingInputGroup">Message...</label>
+                        </div>
+                        <span class="input-group-text"><button id="submit-owner" onclick="sendMessages()">Send</button></span>
+                    </div>
+                </div>
             </section>
 
             <section id="reviews-feedback">

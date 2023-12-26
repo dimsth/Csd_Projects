@@ -68,20 +68,20 @@
                             <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Question...">
                             <label for="floatingInputGroup1">Question...</label>
                         </div>
-                        <span class="input-group-text"><button id="submit-chat" onclick="askChatGPT('')">Ask</button></span>
+                        <span class="input-group-text"><button id="submit-chat" onclick="askChatGPT()">Ask</button></span>
                     </div>
                 </div>
             </div>
             <div class="col-lg-5 cont">
                 <h3>Message Owner</h3>
                 <div class="chat">
-                    <div class="display-owner"></div>
+                    <div class="display-owner" id="display-owner"></div>
                     <div class="input-group">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Message...">
                             <label for="floatingInputGroup2">Message...</label>
                         </div>
-                        <span class="input-group-text"><button id="submit-chat" class="" onclick="">Send</button></span>
+                        <span class="input-group-text"><button id="submit-owner" onclick="sendMessages()">Send</button></span>
                     </div>
                 </div>
             </div>

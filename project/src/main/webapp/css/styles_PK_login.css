@@ -68,6 +68,8 @@ main{
 .display-chat{
     height: 510px;
 }
+
+.user-owner,
 .user-chat,
 .user-user{
     width: 75%;
@@ -83,6 +85,7 @@ main{
     border-top-left-radius: 45px;
 }
 
+.user-owner,
 .user-chat{
     background-color: gray;
     border-bottom-right-radius: 45px;

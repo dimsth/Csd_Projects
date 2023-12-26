@@ -263,3 +263,43 @@ footer {
 .review-submit-btn:hover {
     background-color: #45a049;
 }
+
+.chat{
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    background-color: #f2f2f2;
+}
+
+.display-keeper{
+    height: 550px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.user-owner,
+.user-user{
+    width: 75%;
+    margin: 2px;
+    padding: 5px;
+    
+}
+
+.user-owner{
+    align-self: end;
+    background-color: #6495ed;
+    border-bottom-left-radius: 45px;
+    border-top-left-radius: 45px;
+}
+
+.user-user{
+    background-color: gray;
+    border-bottom-right-radius: 45px;
+    border-top-right-radius: 45px;
+}
+
+.input-group-text button{
+    border: none;
+    background-color: transparent;
+}

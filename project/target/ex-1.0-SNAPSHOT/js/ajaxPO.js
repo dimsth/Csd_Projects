@@ -1,4 +1,4 @@
-
+var book_id;
 window.onload = function () {
     getOwnerBookings();
     getOwnerReviews();
@@ -48,6 +48,10 @@ function createBookingsTable(bookings) {
                 '<td>'+booking.price+'</td>'+
                 '<td>'+getActionButtons(booking)+'</td>'+
                 '</tr>';
+        
+        console.log(booking.status);
+        if (booking.status === "accepted")
+            book_id = booking.booking_id;
     });
 
     tableHtml += '</tbody></table>';
@@ -336,6 +340,7 @@ function getOwnerBookings() {
                 var response = JSON.parse(xhr.responseText);
                 var bookings = response.data; // Extract the array from the 'data' property
                 document.getElementById("owner_bookings_table").innerHTML = createBookingsTable(bookings);
+                getMessages();
             } else {
                 document.getElementById('msg').innerHTML = 'Request failed. Status: '+xhr.status;
             }
@@ -466,4 +471,61 @@ function finishBooking(bookingId) {
     xhr.open("PUT", "http://localhost:4562/api/finishBooking/"+bookingId);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
+}
+
+function createOwnersChat(data) {
+    let html = "";
+    
+    let extractedData = data.data.map(item => {
+        return { sender: item.sender, message: item.message };
+    });
+    
+    extractedData.forEach(item => {
+        if (item.sender === "owner"){
+            html += "<p class=\"user-owner\">";
+        } else {
+            html += "<p class=\"user-user\">";
+        }
+            html += item.message;
+            html += "</p>";
+    });
+   
+    return html;
+}
+
+function getMessages(){
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById("display-keeper").innerHTML=createOwnersChat(JSON.parse(xhr.responseText));
+            } else if (xhr.status !== 200) {
+                document.getElementById('msg')
+                        .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
+            }
+        };
+    xhr.open("Get", "http://localhost:4562/api/messages/" + book_id);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+
+function sendMessages(){
+    let text = document.getElementById("floatingInputGroup").value;
+    if (text === ""){
+        return;
+    }
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                getMessages();
+            } else if (xhr.status !== 200) {
+                document.getElementById('msg')
+                        .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
+            }
+        };
+        
+    xhr.open("POST", "http://localhost:4562/api/messages/" + book_id +"/send");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(text);
 }

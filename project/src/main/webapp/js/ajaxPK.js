@@ -128,8 +128,10 @@ xhr.onload = function () {
 		var obj = xhr.responseText;
                 obj = obj.replace(/\[|\]/g, ''); // Remove brackets
                 obj = obj.split(',');
-                if (obj.length !== 1)
+                if (obj.length !== 1){
                     document.getElementById("jobs_table").innerHTML=createJobTable(obj);
+                    getMessages();
+                }
         } else if (xhr.status !== 200) {
             document.getElementById('msg')
                     .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
@@ -189,4 +191,61 @@ function askChatGPT(){
 
 function fillInput(input) {
     document.getElementById('floatingInputGroup1').value = input;
+}
+
+function createOwnersChat(data) {
+    let html = "";
+    
+    let extractedData = data.data.map(item => {
+        return { sender: item.sender, message: item.message };
+    });
+    
+    extractedData.forEach(item => {
+        if (item.sender === "owner"){
+            html += "<p class=\"user-owner\">";
+        } else {
+            html += "<p class=\"user-user\">";
+        }
+            html += item.message;
+            html += "</p>";
+    });
+   
+    return html;
+}
+
+function getMessages(){
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById("display-owner").innerHTML=createOwnersChat(JSON.parse(xhr.responseText));
+            } else if (xhr.status !== 200) {
+                document.getElementById('msg')
+                        .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
+            }
+        };
+    xhr.open("Get", "http://localhost:4568/keeperAPI/messages/" + book_id);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+
+function sendMessages(){
+    let text = document.getElementById("floatingInputGroup2").value;
+    if (text === ""){
+        return;
+    }
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                getMessages();
+            } else if (xhr.status !== 200) {
+                document.getElementById('msg')
+                        .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
+            }
+        };
+        
+    xhr.open("POST", "http://localhost:4568/keeperAPI/messages/" + book_id +"/send");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(text);
 }

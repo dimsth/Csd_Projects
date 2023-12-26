@@ -7,6 +7,7 @@ package com.mycompany.ex;
 import com.google.gson.Gson;
 import static com.mycompany.ex.ChatGPT_Java_Code.chatGPT;
 import database.tables.EditBookingsTable;
+import database.tables.EditMessagesTable;
 import database.tables.EditReviewsTable;
 import java.util.ArrayList;
 import mainClasses.Booking;
@@ -19,6 +20,9 @@ import java.time.temporal.ChronoUnit;
 import static java.lang.Integer.parseInt;
 import mainClasses.PetKeeper;
 import database.tables.EditPetKeepersTable;
+import mainClasses.Message;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -28,6 +32,7 @@ public class PetKeeperRESTAPI {
 
     static ArrayList<Booking> bookings = new ArrayList<>();
     static ArrayList<Review> reviews = new ArrayList<>();
+    static ArrayList<Message> chats = new ArrayList<>();
     static ArrayList<String> resp = new ArrayList<>();
     static String apiPath = "/keeperAPI";
 
@@ -36,6 +41,7 @@ public class PetKeeperRESTAPI {
 
         EditBookingsTable ebt = new EditBookingsTable();
         EditReviewsTable ert = new EditReviewsTable();
+        EditMessagesTable emt = new EditMessagesTable();
 
         get("/api/petKeepers", (request, response) -> {
             try {
@@ -153,8 +159,39 @@ public class PetKeeperRESTAPI {
             String text = request.params(":text");
 
             resp.add(chatGPT(text));
+            response.status(200);
 
             return resp;
+        });
+
+        get(apiPath + "/messages/:id", (request, response) -> {
+            chats.clear();
+            int id = parseInt(request.params(":id"));
+            chats = emt.databaseToMessage(id);
+            response.status(200);
+            response.type("application/json");
+
+            return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(chats)));
+        });
+
+        post(apiPath + "/messages/:id/send", (request, response) -> {
+            int id = parseInt(request.params(":id"));
+            String text = request.body();
+            Message msg = new Message();
+
+            msg.setBooking_id(id);
+            msg.setMessage(text);
+            msg.setSender("keeper");
+
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = now.format(formatter);
+            msg.setDatetime(formattedDateTime);
+
+            emt.createNewMessage(msg);
+            response.status(200);
+
+            return "1";
         });
     }
 }

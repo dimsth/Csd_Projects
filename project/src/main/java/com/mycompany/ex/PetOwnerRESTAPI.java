@@ -18,8 +18,13 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import mainClasses.Booking;
 import database.tables.EditBookingsTable;
+import database.tables.EditMessagesTable;
 import database.tables.EditReviewsTable;
 import database.tables.EditPetOwnersTable;
+import static java.lang.Integer.parseInt;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import mainClasses.Message;
 
 
 /**
@@ -28,6 +33,8 @@ import database.tables.EditPetOwnersTable;
  */
 public class PetOwnerRESTAPI {
 
+    static ArrayList<Message> chats = new ArrayList<>();
+
     public static void main(String[] args) {
         port(4562);
         EditPetsTable editPetsTable = new EditPetsTable();
@@ -35,6 +42,7 @@ public class PetOwnerRESTAPI {
         EditPetKeepersTable editPetKeepersTable = new EditPetKeepersTable();
         EditReviewsTable editReviewsTable = new EditReviewsTable();
         EditPetOwnersTable editPetOwnersTable = new EditPetOwnersTable();
+        EditMessagesTable emt = new EditMessagesTable();
 
         // Endpoint to check for available pet
         get("/api/petOwners/:ownerId/availablePet", (request, response) -> {
@@ -247,6 +255,35 @@ public class PetOwnerRESTAPI {
             }
         });
 
+        get("api/messages/:id", (request, response) -> {
+            chats.clear();
+            int id = parseInt(request.params(":id"));
+            chats = emt.databaseToMessage(id);
+            response.status(200);
+            response.type("application/json");
+
+            return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(chats)));
+        });
+
+        post("api/messages/:id/send", (request, response) -> {
+            int id = parseInt(request.params(":id"));
+            String text = request.body();
+            Message msg = new Message();
+
+            msg.setBooking_id(id);
+            msg.setMessage(text);
+            msg.setSender("owner");
+
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = now.format(formatter);
+            msg.setDatetime(formattedDateTime);
+
+            emt.createNewMessage(msg);
+            response.status(200);
+
+            return "1";
+        });
 
     }
 }
