@@ -10,6 +10,7 @@ import database.tables.EditPetsTable;
 import mainClasses.Review;
 import mainClasses.Pet;
 import mainClasses.PetKeeper;
+import mainClasses.PetOwner;
 import servlets.StandardResponse;
 import database.tables.EditPetKeepersTable;
 import com.google.gson.JsonObject;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import mainClasses.Booking;
 import database.tables.EditBookingsTable;
 import database.tables.EditReviewsTable;
+import database.tables.EditPetOwnersTable;
+
 
 /**
  *
@@ -31,6 +34,7 @@ public class PetOwnerRESTAPI {
         EditBookingsTable editBookingsTable = new EditBookingsTable();
         EditPetKeepersTable editPetKeepersTable = new EditPetKeepersTable();
         EditReviewsTable editReviewsTable = new EditReviewsTable();
+        EditPetOwnersTable editPetOwnersTable = new EditPetOwnersTable();
 
         // Endpoint to check for available pet
         get("/api/petOwners/:ownerId/availablePet", (request, response) -> {
@@ -206,6 +210,43 @@ public class PetOwnerRESTAPI {
                 return "Internal Server Error";
             }
         });
+        put("/api/finishBooking/:bookingId", (request, response) -> {
+            String bookingId = request.params(":bookingId");
+            try {
+                editBookingsTable.updateBookingStatus(bookingId, "finished");
+                response.status(200); // HTTP 200 OK
+                return "Booking marked as finished";
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500); // HTTP 500 Internal Server Error
+                return "Internal Server Error";
+            }
+        });
+
+        get("/api/petOwnerLocation/:ownerId", (request, response) -> {
+            String ownerId = request.params(":ownerId");
+            System.out.println("Fetching location for owner ID: " + ownerId); // Add logging
+            try {
+                // Assuming you have a method getPetOwnerById that fetches the pet owner data
+                PetOwner owner = editPetOwnersTable.getPetOwnerById(ownerId);
+                if(owner != null) {
+                    JsonObject jsonResponse = new JsonObject();
+                    jsonResponse.addProperty("lat", owner.getLat());
+                    jsonResponse.addProperty("lon", owner.getLon());
+                    response.status(200);
+                    response.type("application/json");
+                    return new Gson().toJson(jsonResponse);
+                } else {
+                    response.status(404); // Not found
+                    return "Pet owner not found";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500); // Server error
+                return "Internal Server Error";
+            }
+        });
+
 
     }
 }

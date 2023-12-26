@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -197,7 +198,34 @@ public class EditPetOwnersTable {
             Logger.getLogger(EditPetOwnersTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public PetOwner getPetOwnerById(String ownerId) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            String query = "SELECT lat, lon FROM petowners WHERE owner_id = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, ownerId);
+            ResultSet rs = pstmt.executeQuery();
 
+            if(rs.next()) {
+                PetOwner owner = new PetOwner();
+                owner.setLat(rs.getDouble("lat"));
+                owner.setLon(rs.getDouble("lon"));
+                return owner;
+            }
+            return null;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
    
 
 }

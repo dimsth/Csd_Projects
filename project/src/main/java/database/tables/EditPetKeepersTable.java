@@ -327,7 +327,7 @@ public class EditPetKeepersTable {
         ArrayList<PetKeeper> availableKeepers = new ArrayList<>();
 
         try {
-            String query = "SELECT pk.keeper_id, pk.username, pk.email FROM petkeepers pk WHERE ((pk.catkeeper = 'true' AND ? = 'cat') OR (pk.dogkeeper = 'true' AND ? = 'dog')) AND pk.keeper_id NOT IN (SELECT b.keeper_id FROM bookings b WHERE b.status IN ('requested', 'accepted'))";
+            String query = "SELECT keeper_id, username, email, lat, lon, catprice, dogprice FROM petkeepers WHERE ((catkeeper = 'true' AND ? = 'cat') OR (dogkeeper = 'true' AND ? = 'dog')) AND keeper_id NOT IN (SELECT keeper_id FROM bookings WHERE status IN ('requested', 'accepted'))";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, petType);
             pstmt.setString(2, petType);
@@ -338,23 +338,26 @@ public class EditPetKeepersTable {
                 keeper.setKeeperId(rs.getInt("keeper_id"));
                 keeper.setUsername(rs.getString("username"));
                 keeper.setEmail(rs.getString("email"));
+                keeper.setLat(rs.getDouble("lat"));
+                keeper.setLon(rs.getDouble("lon"));
+                keeper.setCatprice(rs.getInt("catprice"));  // Set catprice
+                keeper.setDogprice(rs.getInt("dogprice"));  // Set dogprice
                 availableKeepers.add(keeper);
             }
-            System.out.println(availableKeepers); // For debugging
-            return availableKeepers;
+
         } catch (SQLException e) {
-            System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         } finally {
-            if (pstmt != null) {
+            if(pstmt != null) {
                 pstmt.close();
             }
-            if (con != null) {
+            if(con != null) {
                 con.close();
             }
         }
-        return null;
+        return availableKeepers;
     }
+
 
 
 }

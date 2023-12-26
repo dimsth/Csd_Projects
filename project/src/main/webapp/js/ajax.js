@@ -503,7 +503,6 @@ function checkLoggedIn() {
                     lr.style.display = "none";
                     pl.style.display = "flex";
                 }
-                
                 user = JSON.parse(xhr.responseText);
                 user = user["keeper_id"];
             } else {
@@ -514,8 +513,7 @@ function checkLoggedIn() {
 
     // Determine which endpoint to call based on user type
     var userType = localStorage.getItem('userType'); // Replace with your method of retrieving user type
-
-    var url = userType === 'PetOwner' ? 'GetPetOwner' : 'GetPetKeeper?';
+    var url = userType==='PetOwner'?'GetPetOwner':'GetPetKeeper?';
     console.log(url);
     xhr.open('GET', url);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');

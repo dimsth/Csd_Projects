@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -250,5 +251,25 @@ public class EditBookingsTable {
             }
         }
     }
-
+    public void updateBookingStatus(String bookingId, String status) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        PreparedStatement pstmt = null;
+        try {
+            String updateQuery = "UPDATE bookings SET status = ? WHERE booking_id = ?";
+            pstmt = con.prepareStatement(updateQuery);
+            pstmt.setString(1, status);
+            pstmt.setString(2, bookingId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
 }

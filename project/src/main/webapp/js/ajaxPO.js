@@ -2,14 +2,24 @@
 window.onload = function () {
     getOwnerBookings();
     getOwnerReviews();
+    checkLoggedIn();
 };
 
 function createTableFromPetKeeperData(data, index) {
-    var html = "<div class='col-5 extra-tt'><h4>Pet Keeper " + index + "</h4><table class='table table-striped'><tr><th>Category</th><th>Value</th></tr>";
+    var html = "<div class='col-5 extra-tt'><h4>Pet Keeper "+index+"</h4><table class='table table-striped'><tr><th>Category</th><th>Value</th></tr>";
     for (const x in data) {
         var category = x;
         var value = data[x];
-        html += "<tr><td>" + category + "</td><td>" + value + "</td></tr>";
+
+        if (category==='lat'||category==='lon'||category==='email'||category==='keeper_id') {
+            continue;
+        }
+
+        if (category==='distance') {
+            value = value.toFixed(2)+' km';
+        }
+
+        html += "<tr><td>"+category+"</td><td>"+value+"</td></tr>";
     }
     html += "</table>";
 
@@ -47,12 +57,10 @@ function createBookingsTable(bookings) {
 function getActionButtons(booking) {
     var buttons = '';
 
-    // Message Pet Keeper Button
     if (booking.status==='accepted') {
-        buttons += '<button onclick="messageKeeper('+booking.keeper_id+')">Message Keeper</button> ';
+        buttons += '<button onclick="finishBooking('+booking.booking_id+')">Finish</button> ';
     }
 
-    // Submit Review Button
     if (booking.status==='finished') {
         buttons += '<button onclick="checkAndOpenReviewForm('+booking.booking_id+','+booking.keeper_id+')">Submit Review</button>';
     }
@@ -84,17 +92,6 @@ function createReviewsTable(reviews) {
     return tableHtml;
 }
 
-function messageKeeper(keeperId) {
-    // Implement messaging functionality
-    console.log('Messaging keeper with ID:', keeperId);
-    // You might open a messaging modal or redirect to a messaging page
-}
-
-function submitReview(keeperId) {
-    // Implement review submission functionality
-    console.log('Submitting review for keeper with ID:', keeperId);
-    // You might open a review submission form in a modal or a new page
-}
 function handleFormSubmission(event) {
     event.preventDefault();
 
@@ -114,28 +111,80 @@ function handleFormSubmission(event) {
     }
 }
 
-function getAvailablePetKeepersByType(petType) {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-        if (xhr.readyState===4&&xhr.status===200) {
-            const response = JSON.parse(xhr.responseText);
-            var content = '';
-            var i = 1;
-            for (let id in response.data) {
-                content += createTableFromPetKeeperData(response.data[id], i);
-                i++;
+async function getAvailablePetKeepersByType(petType) {
+    try {
+        // Fetch pet owner's location (this should return an object with lat and lon)
+        const ownerLocation = await getPetOwnerLocation();
+
+        // Fetch available pet keepers
+        const response = await fetch("http://localhost:4562/api/availablePetKeepers/"+encodeURIComponent(petType), {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
-            document.getElementById("availablePetKeepersResults").innerHTML = content;
-        } else {
-            document.getElementById('availablePetKeepersResults').innerHTML = 'Request failed. Returned status of '+xhr.status;
+        });
+
+        if (!response.ok) {
+            throw new Error('Request failed with status: '+response.status);
         }
-    };
-    xhr.open("GET", "http://localhost:4562/api/availablePetKeepers/"+encodeURIComponent(petType));
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+
+        const keepersData = await response.json();
+        let keepers = keepersData.data;
+
+        // Calculate distances and sort
+        keepers.forEach(keeper=>{
+            keeper.distance = calculateDistance(ownerLocation.lat, ownerLocation.lon, keeper.lat, keeper.lon);
+        });
+        keepers.sort((a, b)=>a.distance-b.distance);
+
+        // Display the sorted list
+        var content = '';
+        keepers.forEach((keeper, index)=>{
+            content += createTableFromPetKeeperData(keeper, index+1);
+        });
+        document.getElementById("availablePetKeepersResults").innerHTML = content;
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById('availablePetKeepersResults').innerHTML = error.message;
+    }
 }
-// function createTableFromPetKeeperData... (your existing function)
+async function getPetOwnerLocation() {
+    var ownerId = localStorage.getItem('userId');
+    console.log("Owner ID: ", ownerId);
+
+    const response = await fetch(`http://localhost:4562/api/petOwnerLocation/${encodeURIComponent(ownerId)}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch pet owner location');
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return {lat: data.lat, lon: data.lon};
+}
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    function toRad(x) {
+        return x*Math.PI/180;
+    }
+
+    var R = 6371;
+    var dLat = toRad(lat2-lat1);
+    var dLon = toRad(lon2-lon1);
+    var a =
+            Math.sin(dLat/2)*Math.sin(dLat/2)+
+            Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*
+            Math.sin(dLon/2)*Math.sin(dLon/2);
+    var c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R*c;
+}
 
 
 function sendRequest(keeperData) {
@@ -401,4 +450,20 @@ function submitReview(bookingId, keeperId) {
     xhr.open("POST", "http://localhost:4562/api/submitReview");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(reviewData));
+}
+function finishBooking(bookingId) {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState===4) {
+            if (xhr.status===200) {
+                alert("Booking successfully marked as finished.");
+                // Refresh the bookings table or update the UI as needed
+            } else {
+                alert("Failed to update booking. Please try again.");
+            }
+        }
+    };
+    xhr.open("PUT", "http://localhost:4562/api/finishBooking/"+bookingId);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
 }
