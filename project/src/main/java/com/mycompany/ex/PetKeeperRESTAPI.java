@@ -5,6 +5,7 @@
 package com.mycompany.ex;
 
 import com.google.gson.Gson;
+import static com.mycompany.ex.ChatGPT_Java_Code.chatGPT;
 import database.tables.EditBookingsTable;
 import database.tables.EditReviewsTable;
 import java.util.ArrayList;
@@ -147,5 +148,13 @@ public class PetKeeperRESTAPI {
             }
         });
 
+        get(apiPath + "/chatgtp/:text", (request, response) -> {
+            resp.clear();
+            String text = request.params(":text");
+
+            resp.add(chatGPT(text));
+
+            return resp;
+        });
     }
 }

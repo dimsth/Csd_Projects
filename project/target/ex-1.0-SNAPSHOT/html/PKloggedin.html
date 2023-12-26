@@ -57,13 +57,18 @@
             <div class="col-lg-6 cont">
                 <h3>Ask ChatGPT</h3>
                 <div class="chat">
-                    <div class="display-chat"></div>
+                    <div class="display-chat" id="display-chat"></div>
+                    <div class="ready-q">
+                        <button id="q1" onclick="fillInput('How to take care of a dog?')">How to take care of a dog!</button>
+                        <button id="q2" onclick="fillInput('How to take care of a cat?')">How to take care of a cat!</button>                   
+                        <button id="q3" onclick="fillInput('More information about the breed:')">More information about the breed:</button>
+                    </div>
                     <div class="input-group">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Question...">
                             <label for="floatingInputGroup1">Question...</label>
                         </div>
-                        <span class="input-group-text"><button id="submit-chat" class="" onclick="">Ask</button></span>
+                        <span class="input-group-text"><button id="submit-chat" onclick="askChatGPT('')">Ask</button></span>
                     </div>
                 </div>
             </div>

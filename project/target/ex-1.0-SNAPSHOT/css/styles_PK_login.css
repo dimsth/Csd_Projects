@@ -61,4 +61,46 @@ main{
 .display-chat,
 .display-owner{
     height: 550px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.display-chat{
+    height: 510px;
+}
+.user-chat,
+.user-user{
+    width: 75%;
+    margin: 2px;
+    padding: 5px;
+    
+}
+
+.user-user{
+    align-self: end;
+    background-color: #6495ed;
+    border-bottom-left-radius: 45px;
+    border-top-left-radius: 45px;
+}
+
+.user-chat{
+    background-color: gray;
+    border-bottom-right-radius: 45px;
+    border-top-right-radius: 45px;
+}
+
+.ready-q{
+    display: flex;
+    height: 40px;
+    padding: 2px;
+    justify-content: space-around;
+}
+
+.ready-q button{
+    border-radius: 45px;
+}
+
+.input-group-text button{
+    border: none;
+    background-color: transparent;
 }

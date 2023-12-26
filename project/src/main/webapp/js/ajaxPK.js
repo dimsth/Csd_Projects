@@ -157,3 +157,36 @@ function sendStatus(but_name){
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
 }
+
+function createChatsChat(text, user) {
+    var html = "<p class=\"user-"+user+"\">";
+    html += text;
+    html += "</p>";
+    return html;
+}
+
+function askChatGPT(){
+    let text = document.getElementById("floatingInputGroup1").value;
+    if (text === ""){
+        return;
+    }
+    document.getElementById("display-chat").innerHTML=createChatsChat(text, "user");
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                text = xhr.responseText.slice(1, -1);
+                document.getElementById("display-chat").innerHTML+=createChatsChat(text,"chat");
+            } else if (xhr.status !== 200) {
+                document.getElementById('msg')
+                        .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
+            }
+        };
+    xhr.open("Get", "http://localhost:4568/keeperAPI/chatgtp/" + text);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+
+function fillInput(input) {
+    document.getElementById('floatingInputGroup1').value = input;
+}
