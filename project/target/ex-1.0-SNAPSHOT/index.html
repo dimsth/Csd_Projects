@@ -1,75 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" class="no-js">
-    <head>     
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/styles.css">
-        <title>Pet Care</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Pet Care</title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <script src="js/scripts.js"></script>
-        <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-        <script src="js/map.js"></script>
-        
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script src="js/ajax.js" defer></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </head>
-<body onload="checkLoggedIn()">
-  <header>
-    <div class="container text-center ">
-      <div class="row">
-        <div class="col">
-          <img src="img/img_01.png" alt="ranger-header">
-        </div>
-        <div class="col-8 align-self-center">
-        </div>
-        <div id="lr" class="col lr">      
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script src="js/map.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script src="js/ajax.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body onload="checkLoggedIn()">
+    <header>
+      <div class="container text-center">
+        <div class="row">
+          <div class="col">
+            <img src="img/img_01.png" alt="ranger-header" />
+          </div>
+          <div class="col-8 align-self-center"></div>
+          <div id="lr" class="col lr">
             <p><a href="html/login.html">Login</a></p>
             <p><a href="html/register.html">Register</a></p>
-        </div>
-        <div id="pl" class="col pl hidden">      
+          </div>
+          <div id="pl" class="col pl hidden">
             <p><a href="html/login.html">Profile</a></p>
             <p><a onclick="logoutUser()" id="logout">Logout</a></p>
+          </div>
         </div>
       </div>
+    </header>
+    <main class="mainSection">
+      <div class="heroSection">
+        <div class="heroText">
+          <h2 style="color: black">who looks over pets!</h2>
+          <form onsubmit="event.preventDefault(); getPetKeepers();">
+            <button type="submit" class="joinNow">View PetKeepers</button>
+          </form>
+        </div>
+      </div>
+
+      <section id="petKeepersSection" class="container mt-4">
+        <div id="availablePetKeepersResults"></div>
+        <!-- Container where pet keepers will be displayed -->
+      </section>
+    </main>
+  </body>
+  <footer class="py-3 footer">
+    <div class="footer-container">
+      <!-- Pet Information Links -->
+      <div class="footer-links">
+        <h3>Useful Pet Resources</h3>
+        <ul>
+          <li>
+            <a href="https://www.i-pet.gr/" target="_blank"
+              >Σελίδα για Κατοικίδια</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://allaboutpets.gr/katoikidia-zoa-gia-mesa-sto-spiti/"
+              target="_blank"
+              >Σελίδα για Κατοικίδια (Ζώα για μέσα στο σπίτι)</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social Media Links -->
+      <div class="footer-social">
+        <h3>Follow Us</h3>
+        <ul>
+          <li>
+            <a href="https://www.facebook.com/" target="_blank">Facebook</a>
+          </li>
+          <li>&copy; 2023 CSD, csd5010</li>
+        </ul>
+      </div>
     </div>
-  </header>
-       <main class="mainSection">
-           <div class="heroSection">
-               <div class="heroText">
-                   <h2 style="color: black;">who looks over pets!</h2>
-                   <form onsubmit="event.preventDefault(); getPetKeepers();">
-                       <button type='submit' class="joinNow">View PetKeepers</button>
-                   </form>
-               </div>
-           </div>
-
-            <section id="petKeepersSection" class="container mt-4">
-                <div id="availablePetKeepersResults"></div> <!-- Container where pet keepers will be displayed -->
-            </section>
-        </main>
-
-
-   </body>
-   <footer class="py-3 footer">
-       <div class="container">
-           <h3>Useful Pet Resources</h3>
-           <ul>
-               <li><a href="https://www.i-pet.gr/" target="_blank">Σελίδα για Κατοικίδια</a></li>
-               <li><a href="https://allaboutpets.gr/katoikidia-zoa-gia-mesa-sto-spiti/" target="_blank">Σελίδα για Κατοικίδια (Ζώα για μέσα στο σπίτι)</a></li>
-           </ul>
-
-           <h3>Follow Us</h3>
-           <ul>
-               <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
-               <li><a href="https://www.twitter.com/" target="_blank">Twitter</a></li>
-           </ul>
-       </div>
-       <p class="text-center">&copy; 2023 CSD, csd5010</p>
-   </footer>
+  </footer>
 </html>
