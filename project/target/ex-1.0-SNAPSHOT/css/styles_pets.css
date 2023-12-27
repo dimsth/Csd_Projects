@@ -1,0 +1,122 @@
+body{
+    background-color: #d8dad3;
+    font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+.row{
+    width: 100%;
+    justify-content: space-around;
+}
+header h1 {
+  text-align: center;
+}
+
+header{
+  background-color: rgba(86, 98, 70, 1);
+  margin: 0;
+}
+ 
+header img[alt="ranger-header"]{   
+  max-height: 90px; 
+  object-fit: cover;  
+}
+
+header a, 
+header p{
+	margin: 0;
+	padding: 0;
+	font-size: 25px;
+        color: #000;
+}
+header p{
+	align-self: center;
+}
+
+/* Footer */
+footer{ 
+  background-color: #4a4a48;
+  border: 5px solid #4a4a48; 
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 100px; 
+  margin-top: 20px auto;
+}
+
+footer a{
+  color:#fff;
+}
+
+.lr{
+    display: flex;
+    gap: 7px;
+}
+
+
+div .hidden{
+    display: none;
+}
+
+.pl{
+    display: flex;
+    gap: 7px;
+}
+
+#logout{
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+}
+
+.req1,
+.req2,
+.req3,
+.req4{
+    border-bottom: 1px solid #000;
+    margin-bottom: 10px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 5px;
+    padding-bottom: 3px
+}
+
+#myForm{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.extra-t{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+.extra-tt{
+    overflow-x: auto;
+}
+
+#choices,
+#output{
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+#output{
+    background-color: rgba(216, 218, 211, .75);
+}
+#choices{
+    background-color: #a4c2a5;
+}
+
+#msg{
+    display: flex;
+    justify-content: space-around;
+}

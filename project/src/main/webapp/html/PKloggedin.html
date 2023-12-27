@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/styles_PK_login.css">
+        <title>PKLoggedIn Form</title>
+        <base href="/ex/">
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="js/ajax.js" defer></script>
+        <script src="js/ajaxPK.js" defer></script>
+
+    </head>
+
+    <body onload="checkLoggedIn();getPKInfo()">
+        <header>
+            <div class="container text-center ">
+                <div class="row">
+                    <div class="col">
+                        <img src="img/img_01.png" alt="ranger-header">
+                    </div>
+                    <div class="col-8 align-self-center">
+                           <h1>Welcome Pet Keeper</h1>
+                    </div>
+                    <div id="lr" class="col lr">
+                        <p><a href="html/login.html">Login</a></p>
+                        <p><a href="html/register.html">Register</a></p>
+                    </div>
+                    <div id="pl" class="col pl hidden">
+                        <p><a href="html/login.html">Profile</a></p>
+                        <p><a onclick="logoutUser()" id="logout">Logout</a></p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="col-lg-4 cont">
+                <h3>Stats</h3>
+                <div id="status_table"></div>
+            </div>
+            <div class="col-lg-7 cont">
+                <h3>Reviews</h3>
+                <div id="reviews_table"></div>
+            </div>
+            <div class="col-lg-11 cont">
+                <h3>Jobs</h3>
+                <div id="jobs_table"></div>
+            </div>
+            <div class="col-lg-6 cont">
+                <h3>Ask ChatGPT</h3>
+                <div class="chat">
+                    <div class="display-chat" id="display-chat"></div>
+                    <div class="ready-q">
+                        <button id="q1" onclick="fillInput('How to take care of a dog?')">How to take care of a dog!</button>
+                        <button id="q2" onclick="fillInput('How to take care of a cat?')">How to take care of a cat!</button>                   
+                        <button id="q3" onclick="fillInput('More information about the breed:')">More information about the breed:</button>
+                    </div>
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Question...">
+                            <label for="floatingInputGroup1">Question...</label>
+                        </div>
+                        <span class="input-group-text"><button id="submit-chat" onclick="askChatGPT()">Ask</button></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 cont">
+                <h3>Message Owner</h3>
+                <div class="chat">
+                    <div class="display-owner" id="display-owner"></div>
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputGroup2" placeholder="Message...">
+                            <label for="floatingInputGroup2">Message...</label>
+                        </div>
+                        <span class="input-group-text"><button id="submit-owner" onclick="sendMessages()">Send</button></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </body>
+
+</html>
