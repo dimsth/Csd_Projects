@@ -28,6 +28,28 @@ public class EditBookingsTable {
         createNewBooking(r);
     }
 
+    public ArrayList<Booking> getAllBookings() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ArrayList<Booking> tmp = new ArrayList<>();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM bookings");
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                Booking msg = gson.fromJson(json, Booking.class);
+                tmp.add(msg);
+            }
+            return tmp;
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+
+        }
+        return null;
+    }
+
     public ArrayList<Booking> takeAllPetKeepersBooking(String id) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();
         Statement stmt = con.createStatement();

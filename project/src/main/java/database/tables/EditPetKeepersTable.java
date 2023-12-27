@@ -42,8 +42,33 @@ public class EditPetKeepersTable {
         String json = gson.toJson(user, PetKeeper.class);
         return json;
     }
-    
-   
+
+    public void deletePetKeeper(String id) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        String delete = "DELETE FROM petkeepers WHERE keeper_id = '" + id + "'";
+        stmt.executeUpdate(delete);
+    }
+
+    public ArrayList<PetKeeper> getAllFullPetKeepers() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ArrayList<PetKeeper> tmp = new ArrayList<>();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM petkeepers");
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                PetKeeper msg = gson.fromJson(json, PetKeeper.class);
+                tmp.add(msg);
+            }
+            return tmp;
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+        }
+        return null;
+    }
     
     public void updatePetKeeper(String username, String field, String value) throws SQLException, ClassNotFoundException {
         Connection con = DB_Connection.getConnection();

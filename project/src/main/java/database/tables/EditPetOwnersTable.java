@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 /**
  *
@@ -41,8 +42,33 @@ public class EditPetOwnersTable {
         String json = gson.toJson(user, PetOwner.class);
         return json;
     }
+
+    public void deletePetOwner(String id) throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        String delete = "DELETE FROM petowners WHERE owner_id = '" + id + "'";
+        stmt.executeUpdate(delete);
+    }
     
-   
+    public ArrayList<PetOwner> getAllPetOwners() throws SQLException, ClassNotFoundException {
+        Connection con = DB_Connection.getConnection();
+        Statement stmt = con.createStatement();
+        ArrayList<PetOwner> tmp = new ArrayList<>();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM petowners");
+            while (rs.next()) {
+                String json = DB_Connection.getResultsToJSON(rs);
+                Gson gson = new Gson();
+                PetOwner msg = gson.fromJson(json, PetOwner.class);
+                tmp.add(msg);
+            }
+            return tmp;
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+        }
+        return null;
+    }
     
     public void updatePetOwner(String username,String personalpage) throws SQLException, ClassNotFoundException{
         Connection con = DB_Connection.getConnection();
