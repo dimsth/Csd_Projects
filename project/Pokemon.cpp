@@ -149,36 +149,52 @@ void pkmn::Pokemon::operator+(bool value){
 	setInPokeball(value);
 }
 void pkmn::Pokemon::operator/(std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> _move){
-    ExtraFunc = _move;
+    ExtraFunc.push_back(_move);
+    functions++;
+    finishExtraFuncRound.push_back(-1);
 }
 
 void pkmn::Pokemon::setExtraFuncFor(int _num){
-    numOfRoundExtraFunc = _num;
-    extraFunctionType = true;
+    numOfRoundExtraFunc.push_back( _num);
+    extraFunctionType.push_back( true);
 }
 void pkmn::Pokemon::setExtraFuncAfter(int _num){
-    numOfRoundExtraFunc = _num;
-    extraFunctionType = false;
+    numOfRoundExtraFunc.push_back(_num);
+    extraFunctionType.push_back(false);
 } 
 
-std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> pkmn::Pokemon::getExtraFunc(){
-    return ExtraFunc;
+std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> pkmn::Pokemon::getExtraFunc(int i){
+    auto it = ExtraFunc.begin();
+    std::advance(it, i); 
+    return *it;
 }
         
-bool pkmn::Pokemon::getFuncType(){
-    return extraFunctionType;
+bool pkmn::Pokemon::getFuncType(int i){
+    auto it = extraFunctionType.begin();
+    std::advance(it, i); 
+    return *it;
+    }
+
+int pkmn::Pokemon::getFinishRound(int i){
+    auto it = finishExtraFuncRound.begin();
+    std::advance(it, i); 
+    return *it;
 }
 
-int pkmn::Pokemon::getFinishRound(){
-    return finishExtraFuncRound;
-}
-
-int pkmn::Pokemon::getRoundextrafunc(){
-    return numOfRoundExtraFunc;
+int pkmn::Pokemon::getRoundextrafunc(int i){
+    auto it = numOfRoundExtraFunc.begin();
+    std::advance(it, i); 
+    return *it;
 }
 
 void pkmn::Pokemon::setFinishExtraFuncRound(int _round){
-    finishExtraFuncRound = _round;
+    finishExtraFuncRound.push_back(_round);
+}
+
+void pkmn::Pokemon::setFinishRound(int i, int val){
+    auto it = finishExtraFuncRound.begin();
+    std::advance(it, i);
+    *it = val;
 }
 
 // Setters

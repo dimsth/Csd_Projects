@@ -23,7 +23,7 @@ CREATE ABILITY {
     ACTION: START
         DAMAGE DEFENDER 20
         POKEBALL DEFENDER _
-        AFTER 1 ROUNDS DO
+        AFTER 3 ROUNDS DO
             POKEBALL DEFENDER -- -α
         END
     END
@@ -85,7 +85,7 @@ DEAR "Mew" LEARN [
     ABILITY_NAME(Grass_Knot)
     ABILITY_NAME(Shock)
     ABILITY_NAME(Water_Gun)
-    ABILITY_NAME(Bite)
+    ABILITY_NAME(Crunch)
 ]
 
 DEAR "Hoothoot" LEARN [

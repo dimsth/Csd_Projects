@@ -22,12 +22,13 @@ namespace pkmn{
         int playerNum = 0;
         int round = 0;
 
-        bool extraFunctionType;
-        int finishExtraFuncRound = -1;
-        int numOfRoundExtraFunc = -1;
-        std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> ExtraFunc;
+        std::list<bool> extraFunctionType;
+        std::list<int> finishExtraFuncRound;
+        std::list<int> numOfRoundExtraFunc;
+        std::list<std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)>> ExtraFunc;
     
     public:
+    int functions = 0;
 
 // Constructor
     Pokemon(std::string, std::string, int);
@@ -44,6 +45,7 @@ namespace pkmn{
     void setPlayerNum(int newPlayerNum);
     void setRound(int newRound);
     void setFinishExtraFuncRound(int);
+    void setFinishRound(int, int);
 
     // Getters
     int getHP() const;
@@ -56,10 +58,10 @@ namespace pkmn{
     std::string getOpponentsType() const;
     int getPlayerNum() const;
     int getRound() const;
-    std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getExtraFunc(); 
-    bool getFuncType();
-    int getFinishRound();
-    int getRoundextrafunc();
+    std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getExtraFunc(int); 
+    bool getFuncType(int);
+    int getFinishRound(int);
+    int getRoundextrafunc(int);
 
     // Other member functions...
 

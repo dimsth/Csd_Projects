@@ -9,7 +9,8 @@
   int main() {                                                                 \
     std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> noOp;                  \
     pkmn::Ability tempAbility{"Temp", noOp};                                   \
-    pkmn::Pokemon tempPokemon{"Temp", "Temp", 0};                        
+    pkmn::Pokemon tempPokemon{"Temp", "Temp", 0};                              
+    //PokeballValue α = true; 
 #define END_GAME                                                               \
   ; return 0;                                                                    \
   }
@@ -29,7 +30,7 @@
 #define HP false ? 0
 #define ACTION false ? noOp
 
-#define START [](pkmn::Pokemon& attacker, pkmn::Pokemon& defender){
+#define START [&](pkmn::Pokemon& attacker, pkmn::Pokemon& defender){
 #define END ;}
 #define ATTACKER attacker +
 #define DEFENDER defender +
@@ -48,7 +49,7 @@
 
 #define FOR ;attacker.setExtraFuncFor(
 #define AFTER ;attacker.setExtraFuncAfter(
-#define ROUNDS ); attacker / [](pkmn::Pokemon& attacker, pkmn::Pokemon& defender
+#define ROUNDS ); attacker / [&](pkmn::Pokemon& attacker, pkmn::Pokemon& defender
 
 #define IF ;if(
 #define DO ){
@@ -64,4 +65,23 @@ enum pokeballValue {
 extern pokeballValue operator-(pokeballValue value);
 extern bool operator--(pokeballValue value);
 
+//Alternative way that didnt work
+// class PokeballValue {
+// public:
+//     bool value;
+
+//     PokeballValue(bool val) : value(val) {}
+
+//     // Unary minus operator
+//     PokeballValue operator-() const {
+//         return PokeballValue(!value); // Example: just negate the value
+//     }
+
+//     // Postfix decrement operator
+//     bool operator--(int) {
+//         PokeballValue oldValue = *this;
+//         value = !value; // Example: toggle the value
+//         return false;
+//     }
+// };
 extern void startDuel();

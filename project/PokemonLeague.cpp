@@ -114,22 +114,25 @@ void startDuel(){
 				player1 + hpRestor;
 			}
 		}
-		if (-1 != player1.getRoundextrafunc()){
-			int _round = player1.getRoundextrafunc();
+		
+		for(int i = 0; i < player1.functions;i++)
+			if (-1 != player1.getRoundextrafunc(i)){
+				int _round = player1.getRoundextrafunc(i);
 
-			if(-1 == player1.getFinishRound())
-				player1.setFinishExtraFuncRound(_round + Round);
+				if(-1 == player1.getFinishRound(i))
+					player1.setFinishRound(i, _round + Round);
 
-			if(Round < player1.getFinishRound() && player1.getFuncType())
-				player1.getExtraFunc()(player1, player2);
-			else if(Round >= player1.getFinishRound() && player1.getFuncType())
-				player1.setFinishExtraFuncRound(-1);
+				if(Round < player1.getFinishRound(i) && player1.getFuncType(i))
+					player1.getExtraFunc(i)(player1, player2);
+				else if(Round >= player1.getFinishRound(i) && player1.getFuncType(i))
+					player1.setFinishRound(i, -2);
 
-			if(Round == player1.getFinishRound() && !player1.getFuncType())
-				player1.getExtraFunc()(player1, player2);
-			else if(Round >= player1.getFinishRound() && !player1.getFuncType())
-				player1.setFinishExtraFuncRound(-1);
-		}
+				if(Round == player1.getFinishRound(i) && !player1.getFuncType(i))
+					player1.getExtraFunc(i)(player1, player2);
+				else if(Round >= player1.getFinishRound(i) && !player1.getFuncType(i))
+					player1.setFinishRound(i, -2);
+				
+			}
 
 		printPokemonStatus(player1, player2);
 		if(!checkIfPokemonStillAlive(player2))
@@ -152,22 +155,23 @@ void startDuel(){
 			}
 		}
 
-		if (-1 != player2.getRoundextrafunc()){
-			int _round = player2.getRoundextrafunc();
+		for(int i = 0; i < player2.functions;i++)
+			if (-1 != player2.getRoundextrafunc(i)){
+				int _round = player2.getRoundextrafunc(i);
 
-			if(-1 == player2.getFinishRound())
-				player2.setFinishExtraFuncRound(_round + Round);
+				if(-1 == player2.getFinishRound(i))
+					player2.setFinishRound(i, _round + Round);
 
-			if(Round < player2.getFinishRound() && player2.getFuncType())
-				player2.getExtraFunc()(player2, player1);
-			else if(Round >= player2.getFinishRound() && player2.getFuncType())
-				player2.setFinishExtraFuncRound(-1);
+				if(Round < player2.getFinishRound(i) && player2.getFuncType(i))
+					player2.getExtraFunc(i)(player2, player1);
+				else if(Round >= player2.getFinishRound(i) && player2.getFuncType(i))
+					player2.setFinishRound(i, -2);
 
-			if(Round == player2.getFinishRound() && !player2.getFuncType())
-				player2.getExtraFunc()(player2, player1);
-			else if(Round >= player2.getFinishRound() && !player2.getFuncType())
-				player2.setFinishExtraFuncRound(-1);
-		}
+				if(Round == player2.getFinishRound(i) && !player2.getFuncType(i))
+					player2.getExtraFunc(i)(player2, player1);
+				else if(Round >= player2.getFinishRound(i) && !player2.getFuncType(i))
+					player2.setFinishRound(i, -2);
+			}
 
 		printPokemonStatus(player1, player2);
 		if(!checkIfPokemonStillAlive(player1))
