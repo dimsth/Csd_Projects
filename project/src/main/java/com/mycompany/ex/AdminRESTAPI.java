@@ -55,11 +55,15 @@ public class AdminRESTAPI {
             return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(keepers)));
         });
 
-        delete(apiPath + "/PO//delete/:id", (request, response) -> {
+        delete(apiPath + "/PO/delete/:id", (request, response) -> {
             owners.clear();
             String id = request.params(":id");
+            System.out.println("ID");
+            System.out.println(id);
             eot.deletePetOwner(id);
+            System.out.println("Delete");
             owners = eot.getAllPetOwners();
+            System.out.println(owners);
 
             response.status(200);
             return new Gson().toJson(new StandardResponse(new Gson().toJsonTree(owners)));

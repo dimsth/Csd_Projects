@@ -363,7 +363,7 @@ function getOwnerBookings() {
                 document.getElementById("owner_bookings_table").innerHTML = createBookingsTable(bookings);
                 getMessages();
             } else {
-                document.getElementById('msg').innerHTML = 'Request failed. Status: '+xhr.status;
+                console.log('Request failed. Status: '+xhr.status);
             }
         }
     };
@@ -383,7 +383,7 @@ function getOwnerReviews() {
             var reviews = response.data; // Extract the array from the 'data' property
             document.getElementById("reviews_table").innerHTML = createReviewsTable(reviews);
         } else {
-            document.getElementById('msg').innerHTML = 'Failed to load reviews. Status: '+xhr.status;
+            console.log('Failed to load reviews. Status: '+xhr.status);
         }
     };
     xhr.open("GET", "http://localhost:4562/ownerAPI/reviews/"+ownerId);
@@ -497,8 +497,7 @@ function getMessages(){
             if (xhr.readyState === 4 && xhr.status === 200) {
                 document.getElementById("display-keeper").innerHTML=createOwnersChat(JSON.parse(xhr.responseText));
             } else if (xhr.status !== 200) {
-                document.getElementById('msg')
-                        .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
+                console.log('Request failed. Returned status of ' + xhr.status);
             }
         };
     xhr.open("Get", "http://localhost:4562/api/messages/" + book_id);

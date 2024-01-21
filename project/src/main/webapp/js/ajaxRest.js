@@ -15,15 +15,16 @@ const xhr = new XMLHttpRequest();
 xhr.onload = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
            
-		const obj = JSON.parse(xhr.responseText);
-		var i=1;
-		var count= Object.keys(obj.data).length;
-        for(id in obj.data){
-			document.getElementById("msg").innerHTML+=createTableFromJSON(obj.data[id],i);
-			i++;
-			
-		}
-            
+            const obj = JSON.parse(xhr.responseText);
+            var i=1;
+            var count= Object.keys(obj.data).length;
+            document.getElementById("msg").innerHTML = "";
+            for(id in obj.data){
+                    document.getElementById("msg").innerHTML+=createTableFromJSON(obj.data[id],i);
+                    i++;
+
+            }
+
         } else if (xhr.status !== 200) {
             document.getElementById('msg')
                     .innerHTML = 'Request failed. Returned status of ' + xhr.status + "<br>";
@@ -195,7 +196,7 @@ function checkOwner(indexOwner, indexSubmit){
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("Owner Does Not Exists");
+            console.log("Owner Does Not Exists Pets Table");
             submit.disabled = false;
             error.classList.add("hidden");
             owner.style.border = "";
