@@ -101,13 +101,13 @@ void pkmn::Pokemon::printAbilities() {
 
 pkmn::Pokemon& pkmn::Pokemon::operator-()
 {
-	setHP(-getHP());
+	setGetDamage(true);
 	return *this;
 }
 
 pkmn::Pokemon pkmn::Pokemon::operator+(int HPoints)
 {
-	if (getHP() < 0) {
+	if (getGetDamage()) {
 		setHP(abs(getHP()));
 		
         int finalDamage = HPoints;
@@ -136,6 +136,7 @@ pkmn::Pokemon pkmn::Pokemon::operator+(int HPoints)
 
         setHP(getHP() - finalDamage);
 
+        setGetDamage(false);
         return *this;
 	}
 	setHP(getHP() + HPoints);
@@ -238,7 +239,15 @@ void pkmn::Pokemon::setRound(int newRound) {
     round = newRound;
 }
 
+void pkmn::Pokemon::setGetDamage(bool _getDamage) {
+    getDamage = _getDamage;
+}
+
 // Getters
+bool pkmn::Pokemon::getGetDamage() const {
+    return getDamage;
+}
+
 int pkmn::Pokemon::getHP() const {
     return HP;
 }

@@ -5,6 +5,7 @@
 #include <functional>
 #include <list>
 #include <vector>
+#include <algorithm>
 #include <cassert>
 
 namespace pkmn{
@@ -21,6 +22,7 @@ namespace pkmn{
         std::string opponentsType;
         int playerNum = 0;
         int round = 0;
+        bool getDamage = false;
 
         std::list<bool> extraFunctionType;
         std::list<int> finishExtraFuncRound;
@@ -30,38 +32,40 @@ namespace pkmn{
     public:
     int functions = 0;
 
-// Constructor
-    Pokemon(std::string, std::string, int);
+    // Constructor
+        Pokemon(std::string, std::string, int);
 
-    // Setters
-    void setHP(int newHP);
-    void setMaxHP(int newMaxHP);
-    void setType(const std::string& newType);
-    void setName(const std::string& newName);
-    void setInPokeball(bool newValue);
-    void setIsAlive(bool newValue);
-    void setMoves(const std::list<std::string>& newMoves);
-    void setOpponentsType(const std::string& newOpponentsType);
-    void setPlayerNum(int newPlayerNum);
-    void setRound(int newRound);
-    void setFinishExtraFuncRound(int);
-    void setFinishRound(int, int);
+        // Setters
+        void setHP(int newHP);
+        void setMaxHP(int newMaxHP);
+        void setType(const std::string& newType);
+        void setName(const std::string& newName);
+        void setInPokeball(bool newValue);
+        void setIsAlive(bool newValue);
+        void setMoves(const std::list<std::string>& newMoves);
+        void setOpponentsType(const std::string& newOpponentsType);
+        void setPlayerNum(int newPlayerNum);
+        void setRound(int newRound);
+        void setFinishExtraFuncRound(int);
+        void setFinishRound(int, int);
+        void setGetDamage(bool);
 
-    // Getters
-    int getHP() const;
-    int getMaxHP() const;
-    std::string getType() const;
-    std::string getName() const;
-    bool getInPokeball() const;
-    bool getIsAlive() const;
-    std::list<std::string> getMoves() const;
-    std::string getOpponentsType() const;
-    int getPlayerNum() const;
-    int getRound() const;
-    std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getExtraFunc(int); 
-    bool getFuncType(int);
-    int getFinishRound(int);
-    int getRoundextrafunc(int);
+        // Getters
+        int getHP() const;
+        int getMaxHP() const;
+        std::string getType() const;
+        std::string getName() const;
+        bool getInPokeball() const;
+        bool getIsAlive() const;
+        std::list<std::string> getMoves() const;
+        std::string getOpponentsType() const;
+        int getPlayerNum() const;
+        int getRound() const;
+        std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)> getExtraFunc(int); 
+        bool getFuncType(int);
+        int getFinishRound(int);
+        int getRoundextrafunc(int);
+        bool getGetDamage() const;
 
     // Other member functions...
 
@@ -71,20 +75,20 @@ namespace pkmn{
         void operator+(bool);
         Pokemon &operator-();
         void operator/(std::function<void(pkmn::Pokemon&, pkmn::Pokemon&)>);
-	void operator[](std::string);
-    void printAbilities();
-    void addAbilities(const std::vector<std::string>& abilities);
-    bool checkAbility(std::string);
+        void operator[](std::string);
+        void printAbilities();
+        void addAbilities(const std::vector<std::string>& abilities);
+        bool checkAbility(std::string);
 
     // Static function
-    static Pokemon getFromAllPokemons(const std::string& _name);
-    static std::list<pkmn::Pokemon> getAllPokemon();
+        static Pokemon getFromAllPokemons(const std::string& _name);
+        static std::list<pkmn::Pokemon> getAllPokemon();
 
-    void setExtraFuncFor(int);
-    void setExtraFuncAfter(int);
+        void setExtraFuncFor(int);
+        void setExtraFuncAfter(int);
 
-    bool operator==(const Pokemon& other) const;
-};
+        bool operator==(const Pokemon& other) const;
+    };
 
     class Ability{
     private:
