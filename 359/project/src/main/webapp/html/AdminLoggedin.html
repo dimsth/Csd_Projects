@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/styles_admin_login.css">
+        <title>Admin Form</title>
+        <base href="/ex/">
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="js/ajax.js" defer></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="js/ajaxAdmin.js"></script>
+    </head>
+
+    <body onload="getPO()">
+        <header>
+            <div class="container text-center ">
+                <div class="row">
+                    <div class="col">
+                        <img src="img/img_01.png" alt="ranger-header">
+                    </div>
+                    <div class="col-8 align-self-center">
+                           <h1>Admin</h1>
+                    </div>
+                    <div id="lr" class="col lr">
+                        <p><a onclick="logoutUser()" id="logout">Logout</a></p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="col-5 cont">
+                <h3>Pet Owners</h3>
+                <div id="po-table"></div>
+            </div>
+            <div class="col-5 cont">
+                <h3>Pet Keepers</h3>
+                <div id="pk-table"></div>
+            </div>
+            <div class="col-4 cont">
+                <h3>Users Chart</h3>
+                <div id="users-chart"></div>
+            </div>
+            <div class="col-3 cont">
+                <h3>Profits Chart</h3>
+                <div id="profits-chart"></div>
+            </div>
+            <div class="col-4 cont">
+                <h3>Pets Chart</h3>
+                <div id="pets-chart"></div>
+            </div>
+            
+        </main>
+        </body>
+</html>
