@@ -1,0 +1,666 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #d8dad3;
+}
+
+div{
+  display: block;
+}
+  
+.row{
+  display: flex;
+}
+
+.col {
+  margin-bottom: 10px;
+}
+
+form {
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(216, 218, 211, .75);
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  border-color: 2px solid #000;
+}
+
+img[alt="ranger-main"]{
+  max-height: 500px; 
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+main{
+  flex: 1;
+}
+
+h2{
+  text-align: center;
+  text-decoration: underline;
+}
+
+.right-side{
+  width: 30%;
+}
+.left-side{
+  width: 70%;
+}
+
+.l-top-half{
+  height: fit-content;
+  border-radius: 25px;
+  padding: 10px;
+  padding-bottom: 0;
+  margin-bottom: 10px;
+  border: 1px solid #fff;
+  background-color: #a4c2a5;
+  display: flex;
+  flex-direction: column;
+}
+
+.l-bottom-half{
+  height: fit-content;
+  border-radius: 25px;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #fff;
+  background-color: #a4c2a5;
+  display: flex;
+  flex-direction: column;
+}
+
+.r-top-half{
+  height: 85%;
+  border-radius: 25px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.r-bottom-half{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  height: 15%;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+select {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+input:required:valid {
+  border: 1.5px solid green;
+}
+  
+input:required:invalid {
+  border: 1.5px solid red;
+}
+
+/* Header */
+
+h1 {
+  text-align: center;
+  margin-top: 100px;
+}
+
+header{
+  background-color: rgba(86, 98, 70, 1);
+  margin: 0 auto;
+  height: 100px; 
+}
+ 
+img[alt="ranger-header"]{   
+  max-height: 90px; 
+  object-fit: cover;  
+}
+
+header a, 
+header p{
+	margin: 0;
+	padding: 0;
+	font-size: 25px;
+        color: #000;
+}
+header p{
+	align-self: center;
+}
+
+.lb{
+    display: flex;
+    gap: 7px;
+}
+
+/* Username */
+.username-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+label[for="username"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+input[id="username"] {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Email */
+.email-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+label[for="email"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+input[type="email"] {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Password */
+label[for="password"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+  display: flex;
+}
+
+label[for="verify-password"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+  display: flex;
+}
+
+.password-cont {
+  display: flex;
+  flex-direction: column;
+}
+
+input[id="password"],
+input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+  display: inline;
+}
+
+#eye {
+  background: transparent;
+  color: #333;
+
+  float: right;
+  position:relative;
+  right: 45px;
+  bottom: 35px;
+  z-index: 5;
+  
+  cursor: pointer;
+}
+
+#errorPText {
+  display: none;
+  padding-left: 10px;
+  margin-bottom: 0;
+  text-decoration: none;
+}
+
+#errorVPText {
+  display: none;
+  padding-left: 10px;
+  margin-bottom: 0;
+  text-decoration: none;
+  color:red;
+}
+
+/* Telephone */
+.telephone-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+label[for="telephone"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+input[type="tel"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Personal Page */
+.personal-page-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+label[for="personalpage"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+input[type="url"] {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Job */
+.job-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+label[for="job"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+input[id="job"] {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Name */
+label[for="firstname"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+label[for="lastname"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+.name-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+input[id="firstname"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+input[id="lastname"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Address */
+label[for="country"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+label[for="city"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+label[for="address"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+input[id="city"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+input[id="address"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Gender */
+.gender-containered{
+  display: flex;
+  flex-direction: column;
+}
+ 
+.gender-cont {
+  display: flex;
+  flex-direction: row;
+}
+
+input[type="radio"] {
+  width: 50%;
+  font-size: 1.205em;
+  margin-bottom: 5px;
+}
+  
+#male:checked + label {
+  color: #2191fb;
+  font-size: 1.205em;
+}
+
+#female:checked + label {
+  color: #ff66d8;
+  font-size: 1.205em;
+}
+  
+#other-op:checked + label {
+  color: #524632;
+  font-size: 1.205em;
+}
+
+label[id="gender-radio"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+/* Birthdate */
+label[for="birthdate"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.date-containered {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="date"] {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+/* Pet Type */
+.pet-type-containered {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-center;
+}
+
+label[for="pet-type"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+
+p{
+  color:#fff;
+}
+
+/* Agreement */
+[class="agreement-checkbox"] {
+  margin: auto;
+  border-radius: 25px;
+  padding: 0px;
+  margin-bottom: 0px;
+}
+  
+label[for="agreement"] {
+  font-weight: bold;
+  margin: auto;
+  font-size: 0.875em;
+  color: #a997df;
+  text-decoration: underline;
+}
+
+/* Submit */
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f25757;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+  
+input[type="submit"]:enabled:hover {
+  background-color: #f58a8a;
+}
+
+input[type="submit"]:disabled {
+  background-color: #f58a8a;
+}
+
+/* ================================================================================================ */
+#additional-fields {
+  display: none;
+}
+
+#additional-fields-desc {
+  display: none;
+}
+
+#cat-cont {
+  display: none;
+  flex-direction: column;
+}
+
+#dog-cont {
+  display: none;
+  flex-direction: column;
+}
+
+#pet-choice {
+  display: none;
+}
+
+.property-containered{
+  display: flex;
+  flex-direction: column;
+}
+ 
+.property-cont {
+  display: flex;
+  flex-direction: row;
+}
+
+.property-description-containered{
+  display: flex;
+  flex-direction: column;
+}
+
+label[id="property-radio"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+label[id="accommodation"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+label[id="property-description"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+label[id="cat-price"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+  text-decoration: underline;
+}
+
+label[id="dog-price"] {
+  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+input[type="number"] {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  background-color: #f1f2eb;
+}
+
+.map-inner{
+  display: none;
+}
+
+#err-msg0,
+#err-msg1{
+  display: none;
+  color: red;
+  font-size: 1rem; 
+  text-decoration: underline;
+}
+
+
+#submit-button{
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #f25757;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
